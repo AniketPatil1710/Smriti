@@ -1,0 +1,949 @@
+[
+  {
+    "query": "\ud83d\udc77 Migrate automatic labels to Latest Changes\n\n## AI Disclaimer\n\nMade with the help of AI, using Codex with `gpt-5.6-sol`, manually reviewed.",
+    "ground_truth_files": [
+      ".github/labeler.yml",
+      ".github/latest-changes.yml",
+      ".github/workflows/labeler.yml"
+    ],
+    "pr_number": 16185,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Summary\n\n- Preserve automatic pull request labeling with `actions/labeler`\n- Remove the legacy `agilepathway` label-checker job\n- Remove the `labeled` and `unlabeled` triggers that only served the legacy checker\n\nThe required `latest-changes/label` GitHub App check now provides label validation without an additional workflow.\n\n## Checks\n\n- `git diff --check`\n- `zizmor .github/workflows/labeler.yml`\n\n## AI Disclaimer\n\nUsing Codex with gpt-5.6-sol. Reviewed manually.",
+    "ground_truth_files": [
+      ".github/workflows/labeler.yml"
+    ],
+    "pr_number": 16180,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Description\r\n\r\nThe default branch in this repo is `master`, not `main`. It was my mistake.\r\n\r\n## AI Disclaimer\r\n\r\nAI highlighted this while I was working on another task\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      ".github/workflows/zizmor.yml"
+    ],
+    "pr_number": 16178,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Expose the PR Submit token as `GITHUB_TOKEN`, which is recognized by both `gh auth setup-git` and the Sponsors script.\n\nThis fixes the workflow failure after the token exchange succeeded.\n\n## AI Disclaimer\n\nCreated with gpt-5.6-sol and reviewed by hand.",
+    "ground_truth_files": [
+      ".github/workflows/sponsors.yml",
+      "scripts/sponsors.py"
+    ],
+    "pr_number": 16174,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Raise the minimum pytest-xdist version from 2.5.0 to 3.0.2.\n\nThe lowest-direct matrix began resolving pytest-forked 1.7.5, which no longer installs `py`. pytest-xdist 2.5.0 imports `py.log` and crashes while configuring pytest. pytest-xdist 3.0.2 removes that legacy dependency.\n\nValidation:\n\n- Resolved pytest 9.0.0 and pytest-xdist 3.0.2 without `py` using the lowest-direct resolution\n- Ran `pytest -n auto -q tests/test_path.py`: 75 passed\n- Validated the targeted lockfile update with `uv lock --check`\n\n## AI Disclaimer\n\nCreated with gpt-5.6-sol and reviewed by hand.",
+    "ground_truth_files": [
+      "pyproject.toml",
+      "uv.lock"
+    ],
+    "pr_number": 16170,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Replace the long-lived `FASTAPI_TRANSLATIONS` personal access token with a short-lived repository-scoped token from PR Submit.\n\nThe translation workflow now generates translations before requesting write access, checks out without persisted credentials, and uses the PR Submit token only to push the generated branch and create its pull request. The optional tmate session keeps the read-only built-in GitHub token and never receives the PR Submit token.\n\nThe unused `commit_in_place` mode is removed, and generated commits are attributed to `pr-submit[bot]`.\n\nValidated with Ruff, ty, YAML parsing, `git diff --check`, and an online zizmor audit.\n\n## AI Disclaimer\n\nCreated with gpt-5.6-sol and reviewed by hand.",
+    "ground_truth_files": [
+      ".github/pr-submit.yml",
+      ".github/workflows/translate.yml",
+      "scripts/translate.py"
+    ],
+    "pr_number": 16168,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Replace the long-lived personal access token used by workflows that create pull requests with a short-lived repository-scoped token from PR Submit.\n\nThe workflows now request the token through GitHub OIDC, check out without persisted credentials, authenticate Git with `gh auth setup-git`, and attribute commits to `pr-submit[bot]`. The repository allowlist includes only the migrated workflows.\n\nValidated with YAML parsing, `git diff --check`, and an online zizmor audit.\n\n## AI Disclaimer\n\nCreated with gpt-5.6-sol and reviewed by hand.",
+    "ground_truth_files": [
+      ".github/pr-submit.yml",
+      ".github/workflows/bump-pre-commit-hooks.yml",
+      ".github/workflows/prepare-release.yml"
+    ],
+    "pr_number": 16167,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Summary\n\n- expose the short-lived PR Push token as `GH_TOKEN`\n- configure Git authentication with `gh auth setup-git`\n- avoid embedding the token in the repository remote URL\n\n## Checks\n\n- parsed `.github/workflows/pre-commit.yml` as YAML\n- `git diff --check`\n\n## AI Disclaimer\n\nThis PR was created with the help of gpt-5.6-sol and reviewed by hand.",
+    "ground_truth_files": [
+      ".github/workflows/pre-commit.yml"
+    ],
+    "pr_number": 16166,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Summary\n\n- configure automated commits with the PR Push GitHub App identity\n- replace the generic `github-actions[bot]` name and email\n\n## Checks\n\n- parsed `.github/workflows/pre-commit.yml` as YAML\n- `git diff --check`\n\n## AI Disclaimer\n\nThis PR was created with the help of gpt-5.6-sol and reviewed by hand.",
+    "ground_truth_files": [
+      ".github/workflows/pre-commit.yml"
+    ],
+    "pr_number": 16164,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Replace the long-lived PRE_COMMIT PAT with short-lived repository-scoped tokens from PR Push. Fork and Dependabot pull requests continue using pre-commit.ci Lite.\n\n## AI Disclaimer\n\nThis PR was created with the help of gpt-5.6-sol and reviewed by hand.",
+    "ground_truth_files": [
+      ".github/pr-push.yml",
+      ".github/workflows/pre-commit.yml"
+    ],
+    "pr_number": 16161,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Description\r\n\r\nDisable saving Zensical's `.cache` in `build-docs.yml`.\r\nIt's currently useless because we remove directory with `.cache` before running `zensical build` in `scripts/docs.py` ([see code](https://github.com/fastapi/fastapi/blob/a375f6b948b99fa4260129856bbf11d037f363ef/scripts/docs.py#L220)).\r\n\r\nI attempted to fix it by modifying the script to not delete `.cache`, but after some investigation I realized that it's fragile - Zensical's cache invalidation logic doesn't take into account `docs_src` or `.yaml`-files in data. So, it will generate outdated content if we change them.\r\n\r\n## AI Disclaimer\r\n\r\nUsed Claude Code (Opus 5) to investigate and confirm the solution\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      ".github/workflows/build-docs.yml"
+    ],
+    "pr_number": 16156,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Remove the old workflow now that the Latest Changes GitHub App is installed.\n\n## AI Disclaimer\n\nUsing Codex with gpt-5.6-sol. Reviewed manually.",
+    "ground_truth_files": [
+      ".github/workflows/latest-changes.yml"
+    ],
+    "pr_number": 16148,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Summary\n\n- render the Termynal `fast` and `restart` controls as semantic buttons\n- preserve their terminal styling and add explicit hover feedback\n- remove link-only behavior that caused external-link presentation in the docs\n\nThis mirrors fastapi/typer#1912. The controls perform actions rather than navigation, so buttons avoid browser and documentation-theme link handling while retaining the existing behavior.\n\n## Checks\n\n- `git diff --check`\n- verified the focused diff matches the merged Typer implementation\n\n## AI Disclaimer\n\nUsing Codex with gpt-5.6-sol. Reviewed manually.",
+    "ground_truth_files": [
+      "docs/en/docs/css/termynal.css",
+      "docs/en/docs/js/termynal.js"
+    ],
+    "pr_number": 16132,
+    "source": "merged_pr"
+  },
+  {
+    "query": "\ud83d\udc1b Fix support for background tasks and headers from dependencies in `app.frontend()`\r\n\r\n## Pull Request\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with GPT 5.6-sol. Several iterations and lots of steering because the thingy wanted to do weird things, one after the other.\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/docs/tutorial/frontend.md",
+      "fastapi/routing.py",
+      "tests/test_frontend.py"
+    ],
+    "pr_number": 16105,
+    "source": "merged_pr"
+  },
+  {
+    "query": "\ud83d\udcdd Document `FASTAPI_ENV` in FastAPI CLI guide\r\n\r\n## Summary\r\n\r\n- document that `fastapi dev` sets `FASTAPI_ENV=\"development\"` before importing the app\r\n- clarify that an existing `FASTAPI_ENV` value is preserved\r\n- document the conventional `development` and `production` values\r\n- clarify that `fastapi run` leaves the variable unchanged\r\n\r\nThis keeps FastAPI's CLI guide aligned with FastAPI CLI 0.0.32 and the frontend directory behavior added in #16102.\r\n\r\n## Validation\r\n\r\n- `uv run prek run --files docs/en/docs/fastapi-cli.md`\r\n- `uv run python scripts/docs.py build-lang en`\r\n- `git diff --check`\r\n\r\n## AI Disclaimer\r\n\r\nUsing Codex with gpt-5.6-sol. Reviewed manually.",
+    "ground_truth_files": [
+      "docs/en/docs/fastapi-cli.md"
+    ],
+    "pr_number": 16104,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Summary\n\n- treat every nonzero result from the changed tests on the base revision as a demonstrated regression\n- retain the warning when those tests return zero and already pass on the base revision\n- restore the NUL-safe `xargs` invocation because the exact nonzero exit code no longer matters\n\n## Root cause\n\nThe regression check assumed a valid regression would always produce pytest exit code `1`. In https://github.com/fastapi/fastapi/actions/runs/30363892756/job/90290086433?pr=14874, the bug prevented the test module from being collected, so pytest exited with code `2`. A test that cannot start on the base revision but succeeds with the pull request still demonstrates the underlying bug.\n\n## Validation\n\n- verified `xargs` exit code `123` is accepted as a base failure\n- verified all nonzero statuses follow the successful regression-proof branch\n- workflow YAML structure passed\n- repository commit hooks passed, including `zizmor`\n- `git diff --check` passed\n\n## AI Disclaimer\n\nUsing Codex with gpt-5.6-sol. Reviewed manually.",
+    "ground_truth_files": [
+      ".github/workflows/test.yml"
+    ],
+    "pr_number": 16092,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Summary\n\n- replace `xargs` with a Bash array when invoking the changed tests\n- preserve pytest's actual exit code in the regression check\n- keep NUL-delimited filename handling\n\n## Root cause\n\nGNU `xargs` converts a child command's exit code `1` into its own exit code `123`. The regression check therefore treated the expected base-test failure as an inconclusive run and failed, as seen in https://github.com/fastapi/fastapi/actions/runs/30362747816/job/90286229952?pr=14874.\n\n## Validation\n\n- reproduced `xargs` translating exit code `1` to `123`\n- verified the Bash array invocation preserves exit code `1`\n- repository commit hooks passed, including YAML validation and `zizmor`\n- `git diff --check` passed\n\n## AI Disclaimer\n\nUsing Codex with gpt-5.6-sol. Reviewed manually.",
+    "ground_truth_files": [
+      ".github/workflows/test.yml"
+    ],
+    "pr_number": 16091,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u2705 Test PR regressions against base code\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with GPT 5.6-sol. Reviewed by hand.\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      ".github/workflows/test.yml"
+    ],
+    "pr_number": 16090,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Summary\n\n- upgrade `tiangolo/latest-changes` from 0.6.1 to 0.7.1 using the immutable release SHA\n- remove redundant release-note path and heading configuration now provided by the action defaults\n- preserve explicit nonstandard file configuration where required\n\n## Impact\n\nThe workflow now relies on automatic discovery for standard `release-notes.md` layouts and the standalone release-note heading defaults introduced in 0.7.1.\n\n## Validation\n\n- parsed the updated workflow with `yq`\n- verified the discovered release-notes target exists\n- `git diff --check`\n- audited the batch with authenticated online `zizmor`; reported findings were pre-existing and unrelated to this migration\n\n## AI Disclaimer\n\nUsing Codex with gpt-5.6-sol. Reviewed manually.",
+    "ground_truth_files": [
+      ".github/workflows/latest-changes.yml"
+    ],
+    "pr_number": 16077,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## What changed\r\n\r\n- Add a shared FastAPI app fixture with 20 routes and a chain of 101 dependencies.\r\n- Benchmark uncached OpenAPI schema generation in the existing CodSpeed performance job.\r\n- Benchmark the same workload in the existing CodSpeed memory job.\r\n- Verify that dependency-provided query parameters are present in the generated schema.\r\n\r\n## Why\r\n\r\nThis establishes performance and peak-memory baselines for OpenAPI dependency traversal before refactoring the remaining `get_flat_dependant()` usage in OpenAPI generation.\r\n\r\n## Validation\r\n\r\n- `uv run pytest tests/benchmarks/test_openapi.py tests/memory_benchmarks/test_openapi.py --codspeed -q`\r\n- `uv run prek run --files tests/benchmarks/utils.py tests/benchmarks/test_openapi.py tests/memory_benchmarks/test_openapi.py`\r\n\r\n## AI Disclaimer\r\n\r\nThis PR was created with the help of OpenAI Codex, powered by GPT-5.6-sol. Reviewed by hand.",
+    "ground_truth_files": [
+      "tests/benchmarks/test_openapi.py",
+      "tests/benchmarks/utils.py",
+      "tests/memory_benchmarks/test_openapi.py"
+    ],
+    "pr_number": 16075,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u26a1\ufe0f Avoid flattening dependencies for request parameters, mainly for OpenAPI\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with gpt 5.6-sol\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/dependencies/utils.py"
+    ],
+    "pr_number": 16073,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u26a1\ufe0f Avoid flattening dependencies for body fields\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with gpt-5.6-sol\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/dependencies/utils.py",
+      "fastapi/routing.py"
+    ],
+    "pr_number": 16071,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u26a1\ufe0f Skip unused dependency repeat bookkeeping\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with GPT-5.6-sol.\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/dependencies/utils.py"
+    ],
+    "pr_number": 16069,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u26a1\ufe0f Avoid repeated dependency flattening in OpenAPI\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with gpt-5.6-sol\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/openapi/utils.py"
+    ],
+    "pr_number": 16067,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u26a1\ufe0f Stop retaining flat dependency trees\r\n\r\nSuggested by @Kludex in a fork, it should improve memory usage computing dependencies.\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with gpt-5.6-sol, the original fork's commit from Marcelo was probably Claude Code. :thinking: \r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/routing.py"
+    ],
+    "pr_number": 16065,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udc77 Add new memory benchmark\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with gpt-5.6-sol\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "tests/memory_benchmarks/test_route_dependency_graph.py"
+    ],
+    "pr_number": 16064,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u267b\ufe0f Update the lru_cache limit for dependencies to account for large apps\r\n\r\nSome users reported a number of dependencies larger than 1024, this should account for larger apps. I'll wait to see if anyone requests an even larger bump, for now this should work.\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with gpt-5.6-sol. Based on feedback from users on https://github.com/fastapi/fastapi/pull/16049#discussion_r3649928915 and shared in private messages.\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/dependencies/models.py",
+      "tests/test_dependency_models.py"
+    ],
+    "pr_number": 16062,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Problem\n\n`jsonable_encoder` forwards `exclude_defaults` when recursing into list/tuple/set items, but drops it when recursing into dict keys and values \u2014 while the sibling flags `exclude_unset` and `exclude_none` *are* forwarded in that same dict branch. The same model with the same flag encodes differently depending on its container:\n\n```python\nfrom pydantic import BaseModel\nfrom fastapi.encoders import jsonable_encoder\n\nclass M(BaseModel):\n    a: int = 5\n\njsonable_encoder([M()], exclude_defaults=True)       # [{}]\njsonable_encoder({\"k\": M()}, exclude_defaults=True)  # {\"k\": {\"a\": 5}}  <- flag silently ignored\n```\n\nReproduced on 0.139.2.\n\n## Fix\n\nForward `exclude_defaults` in the dict branch's key and value recursion, matching the list branch and the two sibling flags already passed there.\n\nThis deliberately does **not** change `include`/`exclude` propagation for dict values \u2014 that's the broader design question tracked in discussion #15961; this PR only removes the inconsistency between the two container branches for a flag that is already documented as recursive.\n\n## Tests\n\nAdded `test_encode_model_with_default_in_dict_and_list` covering list, dict, and dict-of-list nesting plus a guard that `exclude_unset`/`exclude_none` behaviour is unchanged.\n\n`pytest tests/test_jsonable_encoder.py tests/test_serialize_response.py tests/test_serialize_response_model.py tests/test_serialize_response_dataclass.py tests/test_skip_defaults.py tests/test_response_by_alias.py` \u2192 59 passed, 1 skipped.\n\nRelated: discussions #16029 (original report) and #15961.",
+    "ground_truth_files": [
+      "fastapi/encoders.py",
+      "tests/test_jsonable_encoder.py"
+    ],
+    "pr_number": 16043,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Summary\n\n- document the official FastAPI AI agent skill in the installation flow\n- show the optional `uvx library-skills` command and explain its relationship to `uv tool run`\n- note compatibility with popular coding agents and the Claude Code installation target\n\n## Validation\n\n- `uv run ./scripts/docs.py build-lang en`\n\n## AI Disclaimer\n\nUsing Codex with gpt-5.6-sol. Reviewed manually.",
+    "ground_truth_files": [
+      "docs/en/docs/tutorial/index.md"
+    ],
+    "pr_number": 16041,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udc1b Refactor router route building to make it thread-safe, mainly relevant for tests running in parallel threads (uncommon)\r\n\r\nThis should solve what's described in https://github.com/fastapi/fastapi/discussions/15914\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with GPT-5.6-sol\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/routing.py",
+      "tests/test_router_include_context.py"
+    ],
+    "pr_number": 16013,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udc1b Fix frontend fallback support for doted paths like `/users/john.doe`\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with GPT 5.6-sol\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/docs/tutorial/frontend.md",
+      "fastapi/routing.py",
+      "tests/test_frontend.py"
+    ],
+    "pr_number": 16011,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Bump pre-commit hook versions via `prek auto-update --freeze --cooldown-days 7`.",
+    "ground_truth_files": [
+      ".pre-commit-config.yaml"
+    ],
+    "pr_number": 15985,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Use `FASTAPI_LATEST_CHANGES` token in `bump-pre-commit-hooks` workflow as in other repositories.",
+    "ground_truth_files": [
+      ".github/workflows/bump-pre-commit-hooks.yml"
+    ],
+    "pr_number": 15984,
+    "source": "merged_pr"
+  },
+  {
+    "query": "SSE and JSONL streaming endpoints ignore the `status_code` declared on the path operation and any status code set by a dependency on the `Response` parameter, always returning 200 while the generated OpenAPI documents the declared code. That makes the schema contradict the actual behavior.\n\n```python\n@app.post(/events, response_class=EventSourceResponse, status_code=201)\nasync def events() -> AsyncIterable[str]:\n    yield created\n# returns 200, OpenAPI documents 201\n```\n\nRaw streaming responses (`response_class=StreamingResponse`) already handle both declared and dependency-set status codes via `_build_response_args()`.\n\nThis PR applies the same `_build_response_args()` path to the SSE and JSONL branches. Default behavior is unchanged because the dependency solver's temporary response starts with `status_code = None`, so no status is injected unless the user declared or set one.\n\nAdds `tests/test_stream_status_code.py` covering:\n\n- declared status codes for SSE and JSONL streams\n- dependency-set status codes for SSE and JSONL streams\n- raw streaming as the existing control case\n- default 200 behavior for both stream encodings\n- OpenAPI status-code consistency",
+    "ground_truth_files": [
+      "fastapi/routing.py",
+      "tests/test_stream_status_code.py"
+    ],
+    "pr_number": 15937,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## What changed\n\n- Configure the `notify-translations` workflow checkout step to use the repository default branch explicitly.\n- This keeps `pull_request_target` runs on trusted base-repository code when `actions/checkout@v7` is used.\n\n## Why\n\n`actions/checkout@v7` refuses fork PR code in trusted `pull_request_target` contexts. The workflow only needs trusted repository code to run the notification script/action.\n\n## Validation\n\n- Ran `git diff --check` for the changed workflow.\n\n## AI Disclaimer\n\nUsing Codex with GPT-5. Reviewed manually.",
+    "ground_truth_files": [
+      ".github/workflows/notify-translations.yml"
+    ],
+    "pr_number": 15933,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## What changed\n\n- Configure the `latest-changes` workflow checkout step to use the repository default branch explicitly.\n- This keeps `pull_request_target` runs on trusted base-repository code when `actions/checkout@v7` is used.\n\n## Why\n\n`actions/checkout@v7` refuses fork PR code in trusted `pull_request_target` contexts. For merged PR release-note workflows, the safe target is the base repository default branch.\n\n## Validation\n\n- Ran `git diff --check` for the changed workflow.\n- Verified the pattern end to end in `tiangolo/sandbox`.\n\n## AI Disclaimer\n\nUsing Codex with GPT-5. Reviewed manually.",
+    "ground_truth_files": [
+      ".github/workflows/latest-changes.yml"
+    ],
+    "pr_number": 15932,
+    "source": "merged_pr"
+  },
+  {
+    "query": "The new SSE support (`EventSourceResponse` and `ServerSentEvent` in `fastapi.sse`) is already covered in the tutorial, but it doesn't have a dedicated page in the API Reference like the other public modules (such as `responses`, `websockets`, and `templating`).\r\n\r\nThis PR adds a new `docs/en/docs/reference/sse.md` page following the same pattern as the existing reference pages. It includes `:::` directives for `EventSourceResponse` and `ServerSentEvent`, and adds the page to the navigation alongside the other response-related reference pages.\r\n\r\nI didn't include `format_sse_event` for now because the tutorial currently documents only the two public classes. If you'd prefer it to be part of the API reference as well, I'm happy to add it.\r\n\r\nI also verified that the documentation builds successfully locally without any warnings, and the generated page correctly picks up the existing docstrings and `Doc()` annotations.",
+    "ground_truth_files": [
+      "docs/en/docs/reference/sse.md",
+      "docs/en/mkdocs.yml"
+    ],
+    "pr_number": 15930,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd27 Update sponsors: remove RapidProxy\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "README.md",
+      "docs/en/data/sponsors.yml"
+    ],
+    "pr_number": 15929,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Description\n\nUpdate the `tiangolo/issue-manager` GitHub Action pin to `0.8.1`.\n\nThis picks up the action runtime fix so the Docker action uses its baked-in virtual environment instead of letting `uv run` inspect the consumer repository Python version configuration.\n\n## Checks\n\n- `yq '.jobs' .github/workflows/issue-manager.yml`\n- `git diff --check`\n\n## AI Disclaimer\n\nUsing Codex with GPT-5. Reviewed manually.",
+    "ground_truth_files": [
+      ".github/workflows/issue-manager.yml"
+    ],
+    "pr_number": 15928,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Description\n\nUpdate the `tiangolo/latest-changes` GitHub Action pin to `0.6.1`.\n\nThis picks up the action runtime fix so the Docker action uses its baked-in virtual environment instead of letting `uv run` inspect the consumer repository's Python version configuration.\n\n## Checks\n\n- `yq '.jobs' .github/workflows/latest-changes.yml`\n- `git diff --check`\n\n## AI Disclaimer\n\nUsing Codex with GPT-5. Reviewed manually.",
+    "ground_truth_files": [
+      ".github/workflows/latest-changes.yml"
+    ],
+    "pr_number": 15926,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Applied obvious fixes from https://github.com/fastapi/fastapi/pull/15920.\r\n\r\nAlso fixed these mistakes in translations (checked that pages are synced and updating them will not break outdated pages detection)",
+    "ground_truth_files": [
+      "docs/ru/docs/deployment/concepts.md",
+      "docs/ru/docs/deployment/docker.md",
+      "docs/ru/llm-prompt.md"
+    ],
+    "pr_number": 15924,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u2728 Support dependencies in `app.frontend()`, e.g. for automatic cookie authentication for the frontend\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with GPT 5.5, several iterations. Review by hand.\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/docs/tutorial/frontend.md",
+      "fastapi/routing.py",
+      "tests/test_frontend.py"
+    ],
+    "pr_number": 15908,
+    "source": "merged_pr"
+  },
+  {
+    "query": "\ud83d\udc65 Update FastAPI People - Contributors and Translators",
+    "ground_truth_files": [
+      "docs/en/data/contributors.yml",
+      "docs/en/data/translation_reviewers.yml",
+      "docs/en/data/translators.yml"
+    ],
+    "pr_number": 15878,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Weekly dependency updates are too noisy and not needed.\r\n\r\nDon't update interval for `pre-commit` ecosystem as we decided to remove it.",
+    "ground_truth_files": [
+      ".github/dependabot.yml"
+    ],
+    "pr_number": 15874,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Dependabot doesn't work well with \"pre-commit\" package ecosystem..\r\n\r\nThis PR disables Dependabot \"pre-commit\" package ecosystem and adds a GH workflow to bump pre-commit hooks using `prek auto-update --freeze --cooldown-days 7` command instead.\r\n\r\n---\r\n\r\nTested on my test repo - it works",
+    "ground_truth_files": [
+      ".github/dependabot.yml",
+      ".github/workflows/bump-pre-commit-hooks.yml"
+    ],
+    "pr_number": 15873,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u267b\ufe0f Make `app.frontend()` return 404 for methods other than `GET` or `HEAD` with no static file matches\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with GPT 5.5. Review by hand.\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/docs/tutorial/frontend.md",
+      "fastapi/routing.py",
+      "tests/test_frontend.py"
+    ],
+    "pr_number": 15863,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd27 Update sponsors: remove Stainless\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nTypos, grammar issues, broken links and other small docs improvements should be reported in the pinned Discussion thread \"\u270f\ufe0f Report small docs improvements, including typos or broken links\".\r\nPlease do not open a PR for these yourself.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "README.md",
+      "docs/en/data/sponsors.yml",
+      "docs/en/docs/advanced/generate-clients.md"
+    ],
+    "pr_number": 15862,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Changes\n\nUpdates the Issue Manager workflow to pin `tiangolo/issue-manager` to the released `0.7.1` commit.\n\n## Validation\n\n- Updated only the workflow `uses:` reference for `tiangolo/issue-manager`.\n- Verified the updated workflow content includes `tiangolo/issue-manager@75d60679db1ea348f6f6ea1d0e20de80a7c04645 # 0.7.1`.\n\n## AI Disclaimer\n\nUsing Codex with GPT-5. Reviewed manually.",
+    "ground_truth_files": [
+      ".github/workflows/issue-manager.yml"
+    ],
+    "pr_number": 15833,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Summary\n\n- update the pinned `tiangolo/issue-manager` action to 0.7.0\n- remove the inline issue-manager config so the workflow uses the new built-in defaults\n\n## Validation\n\n- Verified the transformed workflow references `tiangolo/issue-manager@8505bda3fd28623a64d93935cbe13fa23f14fd8b # 0.7.0`\n- Verified the inline `config` block is removed\n\n## AI Disclaimer\n\nUsing Codex with GPT-5.5. Reviewed manually.",
+    "ground_truth_files": [
+      ".github/workflows/issue-manager.yml"
+    ],
+    "pr_number": 15831,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd27 Update sponsors: Add TestMu again\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/data/sponsors.yml",
+      "docs/en/docs/fastapi-people.md"
+    ],
+    "pr_number": 15830,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Summary\n- Run the zizmor workflow on pull requests so workflow security issues are detected before merge.\n- Run zizmor online autofix and keep generated workflow hardening changes.\n\n## AI Disclaimer\nCodex GPT 5.5, reviewed by hand.",
+    "ground_truth_files": [
+      ".github/workflows/zizmor.yml"
+    ],
+    "pr_number": 15820,
+    "source": "merged_pr"
+  },
+  {
+    "query": "This PR adds initial list of specific terms to `llm-prompt.md` for Hindi.\r\n\r\nThe list has been generated with the help of Claude Code and needs to be carefully reviewed\\corrected by native speakers.",
+    "ground_truth_files": [
+      "docs/hi/llm-prompt.md"
+    ],
+    "pr_number": 15810,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udcdd Fix typo in release notes\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/docs/release-notes.md"
+    ],
+    "pr_number": 15807,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udcdd Add `app.frontend()` instructions to Agent Library Skill\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/.agents/skills/fastapi/SKILL.md"
+    ],
+    "pr_number": 15805,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udc1b Fix failing test, update format for raised errors\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/routing.py"
+    ],
+    "pr_number": 15804,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udc77 Fix test-alls-green\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      ".github/workflows/test.yml"
+    ],
+    "pr_number": 15803,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udcdd Udpate release notes link\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/docs/release-notes.md"
+    ],
+    "pr_number": 15802,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u270f\ufe0f Update white space characters in bigger apps\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/docs/tutorial/bigger-applications.md"
+    ],
+    "pr_number": 15801,
+    "source": "merged_pr"
+  },
+  {
+    "query": "\ud83d\udd27Enable checking `release-notes.md` for typos\r\n\r\nThis required adding rules to ignore:\r\n* user mentions (to avoid checking user names in PR info for typos)\r\n* `FastAPI Modul` - this is a German phrase in PR title\r\n* `'wll' to 'will'` - this is a description of typo that was fixed by PR",
+    "ground_truth_files": [
+      "pyproject.toml"
+    ],
+    "pr_number": 15796,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udcdd Tweak wording about deploying to FastAPI Cloud\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/overrides/main.html"
+    ],
+    "pr_number": 15793,
+    "source": "merged_pr"
+  },
+  {
+    "query": "The `-chat` suffix is needed to avoid the warning:\r\n```\r\n/home/yurii/code/1.FastAPI/fastapi/.venv/lib/python3.11/site-packages/pydantic_ai/agent/__init__.py:414: PydanticAIDeprecationWarning: In v2.0, 'openai:' will resolve to the OpenAI Responses API by default. Use 'openai-chat:' to keep current Chat Completions behavior, or 'openai-responses:' to opt in early.\r\n```",
+    "ground_truth_files": [
+      "scripts/translate.py"
+    ],
+    "pr_number": 15792,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd27 Update sponsors: add BairesDev\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "README.md",
+      "docs/en/data/sponsors.yml",
+      "docs/en/docs/img/sponsors/bairesdev.svg"
+    ],
+    "pr_number": 15787,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd28 Update sponsors script to simplify previews\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/data/sponsors.yml",
+      "scripts/docs.py"
+    ],
+    "pr_number": 15786,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u2728 Add `iter_route_contexts()` for advanced use cases that used to use `router.routes` (e.g. Jupyverse)\r\n\r\nRelated to: https://github.com/fastapi/fastapi/discussions/15782\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\nCodex with GPT 5.5 through several iterations, defining and trimming the interface.\r\n\r\nManual review of all the code.\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/openapi/utils.py",
+      "fastapi/routing.py",
+      "tests/test_router_include_context.py"
+    ],
+    "pr_number": 15785,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\nDiscussion: N/A \u2014 this is an obvious Markdown fix.\r\n\r\n## Description\r\n\r\nThis PR fixes broken Markdown in the Korean documentation page:\r\n\r\n* docs/ko/docs/advanced/custom-response.md\r\n\r\nNo translation or content changes are included.\r\n## AI Disclaimer\r\n\r\n## Checklist\r\n\r\n- [x] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [x] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/ko/docs/advanced/custom-response.md"
+    ],
+    "pr_number": 15774,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\u23ea\ufe0f Revert removing scripts, only remove `coverage.sh`\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "scripts/format.sh",
+      "scripts/lint.sh",
+      "scripts/test-cov-html.sh"
+    ],
+    "pr_number": 15772,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd27 Add ty configs to check docs sources\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      ".pre-commit-config.yaml",
+      "pyproject.toml",
+      "scripts/lint.sh"
+    ],
+    "pr_number": 15769,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udea8 Fix typing checks for APIRoute\r\n\r\nRelated to: https://github.com/fastapi/fastapi/issues/15764\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/routing.py"
+    ],
+    "pr_number": 15765,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udc1b Fix bug, allow empty path in path operation in prefixless router\r\n\r\nRelated to https://github.com/fastapi/fastapi/issues/15762\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/routing.py",
+      "tests/test_router_include_context.py"
+    ],
+    "pr_number": 15763,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udcdd Update release notes\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/docs/release-notes.md"
+    ],
+    "pr_number": 15747,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd27 Update sponsors: remove TalorData\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "README.md",
+      "docs/en/data/sponsors.yml"
+    ],
+    "pr_number": 15744,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd27 Update sponsors: remove ExoFlare\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/data/sponsors.yml",
+      "docs/en/docs/fastapi-people.md"
+    ],
+    "pr_number": 15736,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd27 Update sponsors: remove InterviewPal\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "README.md",
+      "docs/en/data/sponsors.yml"
+    ],
+    "pr_number": 15735,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd27 Update sponsors: remove Scalar\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "README.md",
+      "docs/en/data/sponsors.yml",
+      "docs/en/overrides/main.html"
+    ],
+    "pr_number": 15730,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd27 Update sponsors, add Rapidproxy\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "README.md",
+      "docs/en/data/sponsors.yml",
+      "docs/en/docs/img/sponsors/rapidproxy.png"
+    ],
+    "pr_number": 15689,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd27 Update sponsors: Remove TestMu\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/data/sponsors.yml"
+    ],
+    "pr_number": 15688,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n\ud83d\udd25 Remove slim package stub, deprecated for a while\r\n\r\nIt was kept just in case, no longer needed.\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi-slim/README.md"
+    ],
+    "pr_number": 15649,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Description\r\n\r\nTyper 0.26 removed `CLIRunner.isolated_filesystem` context manager that was used in tests to set working directory to temporary path.\r\nSo, FastAPI redistribute tests started to fail (they run with latest dependency versions) - see [logs](https://github.com/fastapi/fastapi/actions/runs/26507260262/job/78062757815?pr=15610).\r\n\r\nHere is where `isolated_filesystem` is used: https://github.com/fastapi/fastapi/blob/dbfd55cea3a656029a9368924f3d8f1f829702c9/scripts/tests/test_translation_fixer/conftest.py#L29\r\n\r\nThe fix is to use custom context manager as in `fastapi-cloud-cli`: https://github.com/fastapilabs/fastapi-cloud-cli/blob/1d807db95e43d598f74ddecb8e7ce107396a99fa/tests/utils.py#L11-L18\r\n\r\n## AI Disclaimer\r\n\r\nNo AI used\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [x] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "scripts/tests/test_translation_fixer/conftest.py"
+    ],
+    "pr_number": 15616,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Summary\r\n\r\nThe docstring for `fastapi.sse.format_sse_event` describes the SSE event terminator as `\\n\\n` inside backticks. Because the docstring is a regular Python string (not raw), `\\n` is interpreted as a newline at parse time, so the rendered docstring \u2014 e.g. via `help(format_sse_event)` or any generated reference docs \u2014 shows two blank lines between empty backticks instead of the intended `\\n\\n` escape sequence.\r\n\r\nEscaping the backslashes (`\\\\n\\\\n` in source) makes the rendered text match what was intended.\r\n\r\n### Before\r\nThe result always ends with `\r\n` (the event terminator).\r\n\r\n### After\r\nThe result always ends with `\\n\\n` (the event terminator).\r\n\r\n## Test plan\r\n\r\n- [x] `python -c \"from fastapi.sse import format_sse_event; print(format_sse_event.__doc__)\"` shows the corrected rendering.\r\n- [x] `ruff check fastapi/sse.py` passes.\r\n- [x] `ruff format fastapi/sse.py --check` passes.\r\n- [x] No code-path change \u2014 only the `__doc__` string content changes; runtime behavior of `format_sse_event` is identical.",
+    "ground_truth_files": [
+      "fastapi/sse.py"
+    ],
+    "pr_number": 15613,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Description\r\n\r\npy39 code examples were removed, but ignores are still here\r\n\r\nAll credits to @AshNicolus\r\nSee PR https://github.com/fastapi/fastapi/pull/15586 that was closed automatically due to our new rule that disallows modifying `pyproject.toml` by external users\r\n\r\n\r\nTo fix CI see PR https://github.com/fastapi/fastapi/pull/15603\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [x] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "pyproject.toml"
+    ],
+    "pr_number": 15610,
+    "source": "merged_pr"
+  },
+  {
+    "query": "The full example in the \"Body - Multiple Parameters\" tutorial recommends and uses Annotated, but one line still uses the non-Annotated version.\r\n\r\n## Pull Request\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: This seemed like an obvious issue with a straightforward fix, so I did not start a discussion.\r\n\r\n## Description\r\n\r\nMy PR updates the line to use Annotated.\r\n\r\n## AI Disclaimer\r\n\r\nNo AI used :)\r\n\r\n## Checklist\r\n\r\n- [x] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change. - No tests needed\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR. - No tests needed\r\n- [x] Coverage stays at 100%.\r\n- [x] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "docs/en/docs/tutorial/body-multiple-params.md"
+    ],
+    "pr_number": 15591,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n\u267b\ufe0f Do not accept underscore headers when using `convert_underscores=True` (the default)\r\n\r\nThis means it would only accept header names separated with hyphens by default, and to accept header names separated with underscores, an app would need to explicitly set `convert_underscores=False`.\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/dependencies/utils.py",
+      "tests/test_query_cookie_header_model_extra_params.py"
+    ],
+    "pr_number": 15589,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: <!-- Link to the GitHub Discussion -->\r\n\r\n## Description\r\n\r\n\u267b\ufe0f Validate Server Sent Event fields to avoid applications from sending broken data\r\n\r\nThis was reported multiple times as a \"vulnerability\" by users probably using automated AI tools, with the argument that if input was taken from the request and passed directly to an event unfiltered, it could break the client.\r\n\r\nIf an app sets an `id` or `event` with multi-line content, I would consider that app broken, and probably the app itself vulnerable to something, not FastAPI. With this change, if any app sets invalid multi-line values (sourced from unfiltered input or in any other way), FastAPI will make it a server error (which it is, as the app is sending invalid data).\r\n\r\nI don't think the code before this PR has a bug, less a vulnerability. This change is mainly a quality of life improvement to prevent badly written apps from shooting themselves in the foot by passing unsanitized data directly to a SSE.\r\n\r\n<!-- Write the description of your PR here -->\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\nCodex with GPT-5.5\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [x] I added tests for the change.\r\n- [x] The new or updated tests fail on the main branch and pass on this PR.\r\n- [x] Coverage stays at 100%.\r\n- [x] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "fastapi/sse.py",
+      "tests/test_sse.py"
+    ],
+    "pr_number": 15588,
+    "source": "merged_pr"
+  },
+  {
+    "query": "## Pull Request\r\n\r\n<!--\r\nPlease start with a GitHub Discussion.\r\n\r\nOnce a team member asks you to open a PR, create it and link the discussion here.\r\n\r\nObvious typo fixes can be made in a PR without starting a discussion.\r\n-->\r\n\r\nDiscussion: \r\n\r\n## Description\r\n\r\nFix engine dispose duplicate from tests, pointed out in https://github.com/fastapi/fastapi/pull/13583#issuecomment-4525847414\r\n\r\n## AI Disclaimer\r\n\r\n<!-- If using AI, write here the prompt and model used -->\r\n\r\n<details>\r\n<summary>AI transcript</summary>\r\n\r\n<!-- Paste here the entire AI transcript -->\r\n\r\n</details>\r\n\r\n## Checklist\r\n\r\n- [ ] This PR is an obvious typo fix, or it links to a GitHub Discussion for the proposed code change.\r\n- [ ] I added tests for the change.\r\n- [ ] The new or updated tests fail on the main branch and pass on this PR.\r\n- [ ] Coverage stays at 100%.\r\n- [ ] The documentation explains the change if needed.",
+    "ground_truth_files": [
+      "tests/test_tutorial/test_sql_databases/test_tutorial001.py",
+      "tests/test_tutorial/test_sql_databases/test_tutorial002.py"
+    ],
+    "pr_number": 15587,
+    "source": "merged_pr"
+  },
+  {
+    "query": "\ud83d\udc77 Configure Dependabot to group updates and update weekly\r\n\r\nAdded `pre-commit` label to the list of available labels in this repo",
+    "ground_truth_files": [
+      ".github/dependabot.yml"
+    ],
+    "pr_number": 15560,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Inspired by [pydantic-ai-harness](https://github.com/pydantic/pydantic-ai-harness/blob/main/.github/workflows/guard-dependencies.yml), going forward we'll only allow maintainers to modify `pyproject.toml` or `uv.lock`. PRs from other contributors will be automatically closed with the GH action commited in this PR (taken and modified from `pydantic-ai-harness`) \ud83d\ude4f",
+    "ground_truth_files": [
+      ".github/workflows/guard-dependencies.yml",
+      "docs/en/docs/help-fastapi.md"
+    ],
+    "pr_number": 15548,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Relative URLs don't work for translations, they point to `/es/img/logos/microsoft.svg` instead of `/img/logos/microsoft.svg`:\r\n\r\n<img width=\"1347\" height=\"337\" alt=\"image\" src=\"https://github.com/user-attachments/assets/afcf307b-2fb8-4ca0-bc9d-208ebc4fab41\" />\r\n\r\nAdding leading slash fixes it. See docs preview for RU translation PR: https://github.com/fastapi/fastapi/pull/15521",
+    "ground_truth_files": [
+      "docs/en/docs/index.md"
+    ],
+    "pr_number": 15534,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Closes #15500.\n\n## What's happening\n\n`format_sse_event` in `fastapi/sse.py` uses `str.splitlines()` to split `data_str` (and `comment`) into SSE lines. `splitlines()` is wrong on two counts here:\n\n1. **Drops trailing empty strings.** `\"Hello\\n\".splitlines()` is `[\"Hello\"]`, so the trailing `data:` line gets eaten \u2014 corrupting any payload that ends with a newline. This is the bug in the linked issue.\n2. **Treats 8 extra characters as line breaks.** `\\v`, `\\f`, `\\x1c`, `\\x1d`, `\\x1e`, `\\x85`, U+2028, U+2029 \u2014 per the [Python docs](https://docs.python.org/3/library/stdtypes.html#str.splitlines). SSE only recognizes `\\n`, `\\r\\n`, and `\\r` per [the spec](https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream), so a payload like `\"A\u2028B\"` was being silently split into two `data:` lines.\n\n## The fix\n\nA small helper, `_split_sse_lines`, normalizes `\\r\\n` and lone `\\r` to `\\n`, then splits on `\\n`. That preserves trailing empties (because `split(\"\\n\")` keeps them), and only recognizes the three line terminators that SSE actually defines.\n\n```python\ndef _split_sse_lines(value: str) -> list[str]:\n    return value.replace(\\\"\\\\r\\\\n\\\", \\\"\\\\n\\\").replace(\\\"\\\\r\\\", \\\"\\\\n\\\").split(\\\"\\\\n\\\")\n```\n\nBoth `data:` and `comment:` branches now go through the helper.\n\n## Tests\n\n8 new unit tests in `tests/test_sse.py` that directly exercise `format_sse_event`:\n\n| Test | Input | Output |\n|---|---|---|\n| `preserves_trailing_newline` | `\\\"Hello\\\\n\\\"` | `b\\\"data: Hello\\\\ndata: \\\\n\\\\n\\\"` |\n| `preserves_trailing_double_newline` | `\\\"Hello\\\\n\\\\n\\\"` | `b\\\"data: Hello\\\\ndata: \\\\ndata: \\\\n\\\\n\\\"` |\n| `single_newline_data` | `\\\"\\\\n\\\"` | `b\\\"data: \\\\ndata: \\\\n\\\\n\\\"` |\n| `crlf_normalizes_to_lf` | `\\\"Hello\\\\r\\\\nWorld\\\"` | `b\\\"data: Hello\\\\ndata: World\\\\n\\\\n\\\"` |\n| `bare_cr_treated_as_line_break` | `\\\"Hello\\\\rWorld\\\"` | `b\\\"data: Hello\\\\ndata: World\\\\n\\\\n\\\"` |\n| `unicode_line_separator_not_split` | `\\\"A\\\\u2028B\\\"` | `b\\\"data: A\\\\u2028B\\\\n\\\\n\\\"` (NOT split) |\n| `vertical_tab_not_split` | `\\\"A\\\\vB\\\"` | `b\\\"data: A\\\\vB\\\\n\\\\n\\\"` (NOT split) |\n| `comment_preserves_trailing_newline` | `comment=\\\"hi\\\\n\\\"` | `b\\\": hi\\\\n: \\\\n\\\\n\\\"` |\n\nThe U+2028 / `\\\\v` tests are the regression catchers \u2014 they distinguish a correct fix (`split(\\\"\\\\n\\\")` after normalizing) from the naive fix (`splitlines()`) and from a wrong fix that splits on every Unicode line break.\n\nAll 26 tests in `tests/test_sse.py` pass:\n\n\\`\\`\\`\ntests/test_sse.py ..........................                              [100%]\n26 passed in 1.94s\n\\`\\`\\`\n\nNo production code outside `format_sse_event` was touched.",
+    "ground_truth_files": [
+      "fastapi/sse.py",
+      "tests/test_sse.py"
+    ],
+    "pr_number": 15515,
+    "source": "merged_pr"
+  },
+  {
+    "query": "hi i've removed nginx unit web server from docs because its unmaintained months and archived\r\nhttps://github.com/fastapi/fastapi/discussions/15450",
+    "ground_truth_files": [
+      "docs/en/docs/deployment/manually.md"
+    ],
+    "pr_number": 15475,
+    "source": "merged_pr"
+  },
+  {
+    "query": "~Added some new technical terms to Spanish LLM prompt.~\r\n\r\n**UPD YuriiMotov:** removed new terms as we discussed in the comments. So, this PR just fixes a couple of typos",
+    "ground_truth_files": [
+      "docs/es/llm-prompt.md"
+    ],
+    "pr_number": 15472,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Currently translation workflow fails with `fatal: could not read Username for 'https://github.com/': No such device or address` due to missing credentials.\r\nThis PR fixes it\r\n\r\n---\r\n\r\nShould we also add `fail-fast: false`, so that if one job fails, others would not be cancelled?",
+    "ground_truth_files": [
+      ".github/workflows/translate.yml"
+    ],
+    "pr_number": 15468,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Just for completeness, in addition to specifying `entrypoint` in `pyproject.toml` and passing path as a parameter, we can specify `--entrypoint` CLI option",
+    "ground_truth_files": [
+      "docs/en/docs/fastapi-cli.md",
+      "docs/en/docs/tutorial/first-steps.md"
+    ],
+    "pr_number": 15464,
+    "source": "merged_pr"
+  },
+  {
+    "query": "### Description:\r\n\r\nCorrected \"prisoner-of-askaban\" (s) to \"prisoner-of-azkaban\" (z) for consistency with the rest of the examples.",
+    "ground_truth_files": [
+      "docs/en/docs/virtual-environments.md"
+    ],
+    "pr_number": 15463,
+    "source": "merged_pr"
+  },
+  {
+    "query": "This PR improves translation consistency and terminology alignment in the Portuguese documentation for the \"Generate Clients\" guide.\r\n\r\n### Changes:\r\n- Improved consistency of translated terms (e.g., \"app\" \u2192 \"aplica\u00e7\u00e3o\")\r\n- Adjusted wording for clarity and readability\r\n- Aligned small phrasing differences with the English version\r\n- Minor cleanup of redundant or unclear expressions\r\n\r\n### Notes:\r\nThese changes are focused on improving translation quality and maintaining consistency with the original English documentation, without modifying technical behavior or meaning.",
+    "ground_truth_files": [
+      "docs/pt/docs/advanced/generate-clients.md"
+    ],
+    "pr_number": 15456,
+    "source": "merged_pr"
+  },
+  {
+    "query": "We need this to be able to upgrade `pygments` to `2.20.0`.\r\nSee https://github.com/fastapi/fastapi/pull/15263#issuecomment-4157921423\r\n\r\n`pymdown-extensions` is not a direct dependency, and `pygments` doesn't directly depend on it (but conflict with it), so it should be upgraded manually",
+    "ground_truth_files": [
+      "uv.lock"
+    ],
+    "pr_number": 15391,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Add pre-commit hook to ensure latest release header in `release-notes.md` has date.\r\n\r\nChecked locally",
+    "ground_truth_files": [
+      ".pre-commit-config.yaml",
+      "scripts/add_latest_release_date.py"
+    ],
+    "pr_number": 15293,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Update \"Development - Contributing\" and \"Repository Management Tasks\" docs to be consistent with our current Docs Translation workflow",
+    "ground_truth_files": [
+      "docs/en/docs/contributing.md",
+      "docs/en/docs/management-tasks.md"
+    ],
+    "pr_number": 15200,
+    "source": "merged_pr"
+  },
+  {
+    "query": "**1. Instruct LLM to preserve the order of links from original document.**\r\n\r\nIn some languages (`ja`, `ko`) sentences might be inverted and it changes the order of links. But our translation fixer tool relies on the fact that links should go in the same order as in the original document.\r\n\r\nCommit: https://github.com/fastapi/fastapi/pull/15174/changes/7c5797c6db0803e7067ac52ef81d599c4a7731e7\r\n\r\n\r\n**2. On retry, pass validation error and results of previous iteration**\r\n\r\nIf translation fails to pass validation we just retry it with the same input. So, retry is kind of a lottery - we just hope that next time it will make it better.\r\n\r\nIf we instead update prompt to provide validation error text and pass current result (instead of initial translation) - it improves results:\r\n\r\n**Before changes it was often something like:**\r\n```\r\n\r\n$ python scripts/translate.py translate-page --en-path docs/en/docs/index.md --language ja\r\nFound existing translation: docs/ja/docs/index.md\r\nTranslating docs/en/docs/index.md to ja (\u65e5\u672c\u8a9e)\r\nRunning agent for docs/ja/docs/index.md (attempt 1/3)\r\nFailed on attempt 1/3: Number of markdown links does not match the number in the original document (6 vs 40)\r\nRunning agent for docs/ja/docs/index.md (attempt 2/3)\r\nFailed on attempt 2/3: Number of markdown links does not match the number in the original document (6 vs 40)\r\nRunning agent for docs/ja/docs/index.md (attempt 3/3)\r\nFailed on attempt 3/3: Number of markdown links does not match the number in the original document (14 vs 40)\r\nTranslation failed for docs/ja/docs/index.md after 3 attempts\r\nSaving translation to docs/ja/docs/index.md\r\n```\r\n_(result still doesn't pass validation)_\r\n\r\n**After changes, it still needs several attempts, but results is improved with every attempt:**\r\n\r\n```\r\n$ python scripts/translate.py translate-page --en-path docs/en/docs/index.md --language ja\r\nFound existing translation: docs/ja/docs/index.md\r\nTranslating docs/en/docs/index.md to ja (\u65e5\u672c\u8a9e)\r\nRunning agent for docs/ja/docs/index.md (attempt 1/3)\r\nFailed on attempt 1/3: Number of markdown links does not match the number in the original document (6 vs 40)\r\nRunning agent for docs/ja/docs/index.md (attempt 2/3)\r\nFailed on attempt 2/3: Number of markdown links does not match the number in the original document (39 vs 40)\r\nRunning agent for docs/ja/docs/index.md (attempt 3/3)\r\nSaving translation to docs/ja/docs/index.md\r\n```\r\n_(after third attempt it gave a valid result)_\r\n\r\nCommit: https://github.com/fastapi/fastapi/pull/15174/changes/c7ca14486e2c4b880eb2009cacbf47ff6f3656eb\r\n\r\nDiff is actually not as big as GitHub shows it. I just moved prompt creation logic outside the `translate_page` and changed it a bit to add the verification error from the last attempt and pass the results of last attempt instead of initial translation.",
+    "ground_truth_files": [
+      "scripts/general-llm-prompt.md",
+      "scripts/translate.py"
+    ],
+    "pr_number": 15174,
+    "source": "merged_pr"
+  },
+  {
+    "query": "This PR includes 2 fixes:\r\n\r\n**1. Don't fail if translation doesn't pass validation (just save it and continue with next page)**\r\n\r\nWhen translation script fails to translate page after 3 attempts (results fails to pass validation), it currently causes the workflow to fail. So, we are missing all data processed by that moment..\r\nWe can actually just skip it and fix this page later manually.\r\n\r\n**2. Forbid whitespace before attributes in markdown link pattern**\r\n\r\n```\r\n## [title](https://example.com) { #permalink }\r\n```\r\n\r\nThe line above currently mathches two patterns: header permalink and markdown link with parameters.\r\n\r\nThis causes problems - translation fixer tool treats it as link and removes whitespace, then it fails with \"Number of permalinks doesn't match..\"\r\n\r\nUpdated pattern of markdown link to not allow that whitespace",
+    "ground_truth_files": [
+      "scripts/doc_parsing_utils.py",
+      "scripts/translate.py"
+    ],
+    "pr_number": 15166,
+    "source": "merged_pr"
+  },
+  {
+    "query": "There seems to be a bug in `Click < 8.3.0` that the value of ENV variable is being interpreted incorrectly for bool flags (`\"false\"` becomes `True`).\r\nThis leads to our `translate.yml` workflow to fail with `Can't commit directly to master` (see https://github.com/fastapi/fastapi/actions/runs/23245751473/job/67573656641)\r\n\r\nThis bug has been fixed in latest versions of Click, but we can't upgrade due to another bug introduced in `Click 8.2.2` and still present in latest version (see https://github.com/fastapi/fastapi/pull/15057 and https://github.com/mkdocs/mkdocs/issues/4032).\r\n\r\nI suggest we use a workaround until it has been solved - pass empty value instead of `\"false\"`.\r\n\r\nI checked locally - it works.\r\n\r\n---\r\n\r\nAlternatively we can pass `commit_in_place` in command line instead of using ENV variable",
+    "ground_truth_files": [
+      ".github/workflows/translate.yml"
+    ],
+    "pr_number": 15151,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Currently translation script fails to translate page if there is an existing translation and the link style in the original document has been changed (e.g. from HTML-style to markdown-style).\r\n\r\n\r\nChecked it locally - works well",
+    "ground_truth_files": [
+      "scripts/general-llm-prompt.md"
+    ],
+    "pr_number": 15148,
+    "source": "merged_pr"
+  },
+  {
+    "query": "We disabled it while we were working on adding new languages (see https://github.com/fastapi/fastapi/pull/14613).\r\nNow it's done and we can re-enable it",
+    "ground_truth_files": [
+      ".github/workflows/translate.yml"
+    ],
+    "pr_number": 15145,
+    "source": "merged_pr"
+  },
+  {
+    "query": "In https://github.com/fastapi/fastapi/pull/15091, I forgot to actually update `lint.sh`, rectifying that here. I double checked all the other `ty` PRs on our other repos, and this one was the only one where I forgot.",
+    "ground_truth_files": [
+      "scripts/lint.sh"
+    ],
+    "pr_number": 15136,
+    "source": "merged_pr"
+  },
+  {
+    "query": "There is currently an issue in FastAPI Reference docs (reported in [this discussion](https://github.com/fastapi/fastapi/discussions/15082)): if parameter description contains code block with long lines, it will extend the column width and part of the text will become hidden:\r\n\r\nSee: https://fastapi.tiangolo.com/reference/fastapi/#fastapi.FastAPI--example\r\n\r\n<details><summary>See screenshot (before fix)</summary>\r\n\r\n<img width=\"805\" height=\"949\" alt=\"image\" src=\"https://github.com/user-attachments/assets/6a1a4ce5-27de-4bb6-b91c-abdb9d5e705b\" />\r\n\r\n</details>\r\n\r\n\r\n---\r\n\r\nTogether with Claude Code figured out a solution that looks quite simple and reasonable.\r\n```css\r\n.doc-param-details .highlight {\r\n  overflow-x: auto;\r\n  width: 0;\r\n  min-width: 100%;\r\n}\r\n```\r\n\r\nClaude Code explained it this way:\r\n* `width: 0` - tells the table layout algorithm that `.highlight` needs zero width, so the `<td>` doesn't expand\r\n* `min-width: 100%` - once the table has calculated column widths, `.highlight` fills the available space\r\n* `overflow-x: auto` - adds a horizontal scrollbar when code is wider than the column\r\n\r\n---\r\n\r\n**After fix,** text fits the column width. If there are long lines in code block, you can use horizontal scroll bar to read them:\r\n\r\nSee (after fix): https://9541300a.fastapitiangolo.pages.dev/reference/fastapi/#fastapi.FastAPI--example\r\n\r\n<details><summary>See screenshot (after fix)</summary>\r\n\r\n<img width=\"853\" height=\"1141\" alt=\"image\" src=\"https://github.com/user-attachments/assets/66806518-7595-4694-8bf8-65b9176e0a3a\" />\r\n\r\n</details>\r\n\r\n## Bonus - fix displaying line numbers in API Reference docs (when run with `LINENUMS=true`)\r\n\r\nAlso fixed annoying bug - when you run docs live locally, it's run with `LINENUMS=true`. But line numbers layout is broken for API Reference docs:\r\n\r\n<details><summary>See screenshot (line numbers before fix)</summary>\r\n\r\n<img width=\"808\" height=\"365\" alt=\"image\" src=\"https://github.com/user-attachments/assets/2900c89d-1afa-4c5c-845d-e9c4fae54d2a\" />\r\n\r\n</details>\r\n\r\nBy-default line numbers are added using table. And if this table is placed inside another table (table of parameters in API reference docs), it breaks styles..\r\n\r\nThere is an alternative approach as described in [docs](https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#+pymdownx.highlight.linenums_style) - use `linenums_style: pymdownx-inline`.\r\n\r\nThis way line numbers are displayed correctly:\r\n\r\n<details><summary>See screenshot (line numbers after fix)</summary>\r\n\r\n<img width=\"795\" height=\"283\" alt=\"image\" src=\"https://github.com/user-attachments/assets/02c9975d-4a17-4a80-9e90-3463d0f7356f\" />\r\n\r\n\r\n</details>",
+    "ground_truth_files": [
+      "docs/en/docs/css/custom.css",
+      "docs/en/mkdocs.yml"
+    ],
+    "pr_number": 15094,
+    "source": "merged_pr"
+  },
+  {
+    "query": "See https://github.com/fastapi/fastapi/discussions/15089\r\n\r\nCurrently, when a non-generator endpoint is annotated with `Iterable[T]` \r\n\r\n```py\r\ndef get_items() -> Iterable[Item]:\r\n    return [...]\r\n```\r\n\r\n`response_model` is set to `None` [here](https://github.com/fastapi/fastapi/blob/11614be9021aa4ac078d4d0693a8b5250a1010d8/fastapi/routing.py#L861).\r\n\r\nThis causes `serialize_response()` to fall back to `jsonable_encoder()`, which ignores all `response_model_*` serialization options (`exclude_none`, `exclude_unset`, `exclude_defaults`, etc.).\r\n\r\nTo fix this we need to add a `and is_generator` condition to `if stream_item is not None:` ([here](https://github.com/fastapi/fastapi/blob/11614be9021aa4ac078d4d0693a8b5250a1010d8/fastapi/routing.py#L849)).\r\n\r\nThis is done in 2 steps:\r\n\r\n1. (commit [d903890](https://github.com/fastapi/fastapi/pull/15093/changes/d903890085ba22c7d1e358ab87888111806a48e2)) Moved the `response_model` resolution and `response_field` / `stream_item_field` creation after `self.dependant` is built, so that a single `is_generator` is used for both stream detection and response model resolution.\r\n\r\n2. (commit [e8c00f5](https://github.com/fastapi/fastapi/pull/15093/changes/e8c00f5a02fa3aeb5b3c93233d32abdaecb536bc)) Added `and is_generator` to the `if stream_item is not None:` condition.",
+    "ground_truth_files": [
+      "fastapi/routing.py",
+      "tests/test_skip_defaults.py"
+    ],
+    "pr_number": 15093,
+    "source": "merged_pr"
+  },
+  {
+    "query": "Currently, even if we block user due to spam and all their comments are minimized, this person will still appear in the FastAPI People statistics.\r\n\r\nI suggest we don't count comments minimized with reasons \"abuse\", \"off-topic\", \"duplicate\", and \"spam\".\r\n\r\nI ran script locally with and without this filter:\r\n* Without: [before.YML](https://github.com/user-attachments/files/25870295/before.YML)\r\n* With filter: [after.YML](https://github.com/user-attachments/files/25870284/after.YML)\r\n\r\n<details><summary>List of skipped comments:</summary>\r\n\r\nhttps://github.com/fastapi/fastapi/discussions/15065#discussioncomment-16046066\r\nhttps://github.com/fastapi/fastapi/discussions/15059#discussioncomment-16010875\r\nhttps://github.com/fastapi/fastapi/discussions/15021#discussioncomment-16010895\r\nhttps://github.com/fastapi/fastapi/discussions/15047#discussioncomment-16010881\r\nhttps://github.com/fastapi/fastapi/discussions/14890#discussioncomment-15879327\r\nhttps://github.com/fastapi/fastapi/discussions/14350#discussioncomment-15052306\r\nhttps://github.com/fastapi/fastapi/discussions/14755#discussioncomment-15879326\r\nhttps://github.com/fastapi/fastapi/discussions/14893#discussioncomment-15795930\r\nhttps://github.com/fastapi/fastapi/discussions/14893#discussioncomment-15879334\r\nhttps://github.com/fastapi/fastapi/discussions/14651#discussioncomment-15421025\r\nhttps://github.com/fastapi/fastapi/discussions/14513#discussioncomment-15241367\r\nhttps://github.com/fastapi/fastapi/discussions/14513#discussioncomment-15241368\r\nhttps://github.com/fastapi/fastapi/discussions/14513#discussioncomment-15241369\r\nhttps://github.com/fastapi/fastapi/discussions/14513#discussioncomment-15241370\r\nhttps://github.com/fastapi/fastapi/discussions/14513#discussioncomment-15241371\r\nhttps://github.com/fastapi/fastapi/discussions/14464#discussioncomment-15208120\r\nhttps://github.com/fastapi/fastapi/discussions/14377#discussioncomment-15052301\r\nhttps://github.com/fastapi/fastapi/discussions/14394#discussioncomment-15052875\r\nhttps://github.com/fastapi/fastapi/discussions/14376#discussioncomment-15052531\r\nhttps://github.com/fastapi/fastapi/discussions/14390#discussioncomment-15052651\r\nhttps://github.com/fastapi/fastapi/discussions/14396#discussioncomment-15052941\r\nhttps://github.com/fastapi/fastapi/discussions/14395#discussioncomment-15052915\r\nhttps://github.com/fastapi/fastapi/discussions/14393#discussioncomment-15052845\r\nhttps://github.com/fastapi/fastapi/discussions/14392#discussioncomment-15052775\r\nhttps://github.com/fastapi/fastapi/discussions/14391#discussioncomment-15052711\r\nhttps://github.com/fastapi/fastapi/discussions/14389#discussioncomment-15052592\r\nhttps://github.com/fastapi/fastapi/discussions/14388#discussioncomment-15052565\r\nhttps://github.com/fastapi/fastapi/discussions/14365#discussioncomment-15052513\r\nhttps://github.com/fastapi/fastapi/discussions/14341#discussioncomment-15052373\r\nhttps://github.com/fastapi/fastapi/discussions/14263#discussioncomment-14837784\r\nhttps://github.com/fastapi/fastapi/discussions/8763#discussioncomment-13577832\r\nhttps://github.com/fastapi/fastapi/discussions/8662#discussioncomment-13554797\r\nhttps://github.com/fastapi/fastapi/discussions/8463#discussioncomment-5152311\r\nhttps://github.com/fastapi/fastapi/discussions/8810#discussioncomment-10233462\r\nhttps://github.com/fastapi/fastapi/discussions/2475#discussioncomment-7133069\r\nhttps://github.com/fastapi/fastapi/discussions/9709#discussioncomment-6447039\r\nhttps://github.com/fastapi/fastapi/discussions/9709#discussioncomment-6448462\r\nhttps://github.com/fastapi/fastapi/discussions/9705#discussioncomment-6372397\r\nhttps://github.com/fastapi/fastapi/discussions/9516#discussioncomment-5858487\r\nhttps://github.com/fastapi/fastapi/discussions/6188#discussioncomment-5128752\r\n\r\n</details>",
+    "ground_truth_files": [
+      "scripts/people.py"
+    ],
+    "pr_number": 15088,
+    "source": "merged_pr"
+  },
+  {
+    "query": "When a typed SSE or JSONL streaming endpoint is registered via a router, the OpenAPI schema loses the stream item type information \u2014 `itemSchema` ends up without `contentSchema`/`contentMediaType` (SSE) or as an empty object (JSONL). The endpoints stream correctly at runtime, only the generated schema is affected.\n\nThis happens because `include_router()` re-creates routes via `add_api_route()`, but `stream_item_type` (computed during the first `APIRoute.__init__` from the return annotation) is not carried over. The re-created route has no way to re-derive it since `response_model` is no longer a `DefaultPlaceholder` at that point.\n\nThe fix threads `stream_item_type` through `add_api_route()` and `include_router()`, following the same pattern used for `strict_content_type`.\n\nDiscussed in https://github.com/fastapi/fastapi/discussions/15066",
+    "ground_truth_files": [
+      "fastapi/routing.py",
+      "tests/test_sse.py",
+      "tests/test_stream_bare_type.py"
+    ],
+    "pr_number": 15077,
+    "source": "merged_pr"
+  },
+  {
+    "query": "\ud83d\udd28 Add JS and CSS handling for automatic `target=_blank` for links in docs",
+    "ground_truth_files": [
+      "docs/en/docs/css/custom.css",
+      "docs/en/docs/js/custom.js"
+    ],
+    "pr_number": 15063,
+    "source": "merged_pr"
+  },
+  {
+    "query": "\ud83d\udd28 Update script to autofix permalinks to account for headers with Markdown links",
+    "ground_truth_files": [
+      "scripts/docs.py"
+    ],
+    "pr_number": 15062,
+    "source": "merged_pr"
+  },
+  {
+    "query": "\ud83d\udc84 Update styles for internal and external links in new tab",
+    "ground_truth_files": [
+      "docs/en/docs/css/custom.css"
+    ],
+    "pr_number": 15058,
+    "source": "merged_pr"
+  }
+]
