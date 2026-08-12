@@ -1,0 +1,80 @@
+# Memory — Smriti
+
+> **Don't fill this in yet.** Create it at the repo root when Phase 1 starts, and update it at the end of every phase. It's what an AI assistant reads first in a new session so it doesn't re-read the codebase or invent state that doesn't exist.
+>
+> Keep it under ~200 lines. When it grows past that, collapse finished phases into one line each. Stale entries are worse than missing ones.
+
+---
+
+**Last updated:** <date> · **Current phase:** <n> — <name>
+
+## Status
+
+| Phase | State | Notes |
+|---|---|---|
+| 0 — Verify assumptions | ⬜ | target repo: ?, usable PRs: ? |
+| 1 — Skeleton + ingestion | ⬜ | |
+| 2 — Chunking | ⬜ | |
+| 3 — Code index | ⬜ | |
+| 4 — Agent + UI | ⬜ | |
+| 5 — History index | ⬜ | |
+| 6 — Hybrid retrieval | ⬜ | |
+| 7 — Eval + ablations | ⬜ | |
+| 8 — Citations | ⬜ | |
+| 9 — Polish + README | ⬜ | |
+
+✅ done · 🟡 in progress · ⬜ not started · ❌ blocked
+
+## What works right now
+
+<One paragraph. What can actually be run and what it produces. Written for
+someone with zero context — assume the reader has never seen this repo.>
+
+## What I'm doing next
+
+<The single next task, concretely. Not a list.>
+
+## Decisions made
+
+<Append-only. Date, decision, and the reason — the reason matters more than
+the decision, because it's what stops a future session from "fixing" it.>
+
+- `YYYY-MM-DD` — <decision> — <why>
+
+## Deviations from the docs
+
+<Anywhere the code diverges from PRD/Architecture/Rules, and why. If a
+deviation is permanent, update the source doc and delete the entry.>
+
+## Known bugs / rough edges
+
+<Things that are broken but not blocking. Include the file. Delete when fixed.>
+
+## Numbers
+
+<Measured facts only, never estimates. Updated as they land.>
+
+- Indexed repo: <name>, <n> files → <n> chunks
+- History records: <n> commits, <n> PRs
+- Eval set size: <n> items
+- recall@5 — dense: <x> · bm25: <x> · hybrid: <x> · hybrid+history: <x>
+- Indexing time: <x> min · API cost: $<x>
+- Answer latency (p50): <x>s
+
+## Files an assistant should read before making changes
+
+- `config.py` — every tunable lives here
+- `src/retrieval/retriever.py` — the single retrieval entry point
+- `Architecture.md` §4 — data contracts, do not change casually
+- `Rules.md` — dependency and error-handling constraints
+
+---
+
+## How to update this
+
+At the end of each phase: flip the status row, rewrite "what works" and "what's
+next", append any decision with its reason, add measured numbers.
+
+Do **not** log a narrative of what you tried. This is a state file, not a
+journal — it should read as *"here is where things stand"*, never *"then I
+tried X and it didn't work."*
