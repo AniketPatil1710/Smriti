@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+langchain
+langchain-openai
+langchain-community
+chromadb
+rank_bm25
+GitPython
+PyGithub
+python-dotenv
+pydantic
+pytest
+tiktoken
