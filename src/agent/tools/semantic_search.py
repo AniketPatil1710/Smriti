@@ -19,7 +19,7 @@ def semantic_search(query: str) -> tuple[str, list[Citation]]:
     surrounding context before answering.
     """
     try:
-        results = retrieve(query, optimize=True)
+        results = retrieve(query, optimize=True, rerank=True)
     except Exception as e:
         logger.warning(f"semantic_search failed for {query!r}: {e}")
         return f"Error: search failed: {e}", []
