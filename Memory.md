@@ -1,4 +1,4 @@
-**Last updated:** 2026-08-13 · **Current phase:** 9 — Polish + README (done, exit criterion passed) — project complete pending user's own review
+**Last updated:** 2026-08-13 · **Current phase:** 9 — Polish + README (done, exit criterion passed), plus a post-P9 retrieval-quality pass (query optimizer, reranker, AST chunking) requested and authorized by the user — see Numbers for final headline result
 
 ## Status
 
@@ -14,6 +14,7 @@
 | 7 — Eval + ablations | ✅ | 110-item eval set × 4 configs, **re-run after the canonical-docs fix below (numbers superseded once, see Numbers)**. Current headline: **hybrid_history 0.411 recall@5 vs dense 0.167 (2.46x)**, leakage-guard verified with concrete evidence. Plain hybrid now clearly *trails* dense (0.139 vs 0.167) — a cleaner, more honest negative result than the earlier near-tie, explained in Decisions |
 | 8 — Citations | ✅ | Tools return `(text, citations)` via LangChain's `content_and_artifact`; agent collects/dedupes into `AskResult.citations`; `/chat` exposes them; UI shows clickable, expandable source chips. Two real bugs found + fixed (see Decisions) |
 | 9 — Polish + README | ✅ | Design.md CSS applied (color tokens, typography, strata bar, citation chips, empty state). README with architecture diagram, results table, honest limitations. 9 phase-by-phase git commits + this one. Fresh-clone test genuinely verified (real `git clone`, fresh venv, real `ingest.py`, real query) — exit criterion passed for real, not assumed |
+| 10 — Retrieval quality (post-P9, user-requested) | ✅ | Query optimizer, LLM reranker, AST-aware Python chunking (tree-sitter) — each proposed with yes/no + impact analysis, authorized by the user, built, and measured in isolation against the eval set. Full-stack recall@5 0.411 → 0.595 (+45% relative) across the three additions combined. See Numbers |
 
 ✅ done · 🟡 in progress · ⬜ not started · ❌ blocked
 
@@ -267,12 +268,69 @@ from GitHub for real; embeddings cache-hit since content is identical, so
 $0 additional cost), real `python app.py`, real `POST /chat` returning a
 correct, cited answer. Exit criterion passed for real.
 
+`src/retrieval/query_optimizer.py` (`optimize_query`) rewrites a query into
+a fuller, more retrieval-friendly form via an LLM call before embedding/BM25
+(e.g. a bare `"APIRouter"` becomes something like `"where is the APIRouter
+class defined?"`), cached by sha256 of the input query in
+`data/cache/query_rewrites_<model>.json` — same content-hash-cache pattern
+as `embedder.py`. Falls back to the original query unchanged on any failure
+(auth/bad-request fail immediately, transient errors retry with backoff, up
+to `QUERY_OPTIMIZER_MAX_RETRIES=3`). Wired into `retriever.retrieve(...,
+optimize=True)`, the live `semantic_search` tool, and a new
+`hybrid_history_optimized` eval config.
+
+`src/retrieval/reranker.py` (`rerank_ids`) re-scores a wider candidate pool
+(`RERANK_CANDIDATE_POOL=20`, fetched post-RRF-fusion) by having an LLM read
+the query and each candidate's actual chunk text together — a comparison
+dense cosine similarity and BM25 term overlap structurally can't make, since
+both score query and document independently and only compare the resulting
+representations. Real bug found and fixed during development: initial
+validation demanded the model's returned ranking be an exact, complete
+permutation of every candidate index; a real 20-candidate case had the model
+return a well-formed ranking covering 19 of 20 (dropping one low-relevance
+index), which the old check discarded entirely, silently falling back to
+unreranked order instead of retrying. Fixed by moving validation (unique,
+in-range, covers at least `top_k`) inside the retry loop instead of after
+it, so a genuinely malformed response gets retried while a
+mostly-correct one is still accepted. Wired into `retriever.retrieve(...,
+rerank=True)`, the live `semantic_search` tool, and a new
+`hybrid_history_optimized_reranked` eval config.
+
+`src/ingestion/ast_chunker.py` (`chunk_python_ast`) replaces character-based
+chunking for Python files: parses the real syntax tree via `tree-sitter` +
+`tree-sitter-python`, and each top-level function or class becomes its own
+chunk on its actual boundary, instead of being cut at an arbitrary character
+offset (the old `RecursiveCharacterTextSplitter.from_language()` is
+language-aware only about *not splitting mid-line*, not about function
+bodies). A class much bigger than `chunk_size` splits into a header chunk
+(signature/docstring/class-level statements) plus one chunk per method, so a
+class with many methods doesn't collapse into one blob. Any single AST unit
+still too big for one chunk falls back to character-splitting just that
+unit (`chunker.py`'s new `_subdivide` helper) — this is what the existing
+long-single-line regression test in `test_chunker.py` caught during
+development, and it preserves the "no oversized chunk" guarantee the old
+splitter had. A file that fails to parse falls back to the character
+splitter entirely. Only Python is covered; every other language is
+unaffected. New tests in `test_ast_chunker.py` (7 tests) cover function/
+class boundaries, decorator handling, large-class splitting, and the
+parse-failure fallback.
+
+Re-ingested `fastapi/fastapi` with the new chunker: **10,718 chunks** (was
+7,206 — AST chunking produces more, finer-grained chunks than the character
+splitter did), 5,453 newly embedded (Python chunk text changed), 5,265
+cache-hit (non-Python files, chunked identically to before).
+
+Adding `tree-sitter`/`tree-sitter-python` is a deliberate, flagged deviation
+from `Rules.md` ("tree-sitter — deferred to P2, do not add it 'while you're
+in there'") — done with the user's explicit go-ahead after being asked
+directly whether to build AST chunking, not added silently. See Decisions.
+
 ## What I'm doing next
 
-Nothing queued — Phase 9 is the last phase in `Phases.md`. Day 5 is the
-deliberately unallocated buffer; `Phases.md` suggests one P1 item (repo map
-summaries) or expanding the eval set if there's time, not both. Otherwise
-the project is complete pending the user's own review of the final commit.
+Nothing queued. Phase 9 (`Phases.md`'s last phase) plus a follow-on
+retrieval-quality pass (query optimizer, reranker, AST chunking — all three
+explicitly requested by the user, each measured against the eval set before
+being kept) are both done. Project is complete pending the user's own review.
 
 ## Decisions made
 
@@ -304,12 +362,17 @@ the project is complete pending the user's own review of the final commit.
 - `2026-08-12` — Fixed the multi-language-docs finding flagged during Phase 8 (user asked to address it immediately rather than deferring to Phase 9): `file_walker.walk_repo` now indexes only `docs/en/` when that canonical-language root exists, skipping the other 12 translation trees fastapi ships. General, not fastapi-hardcoded — detects the convention rather than listing specific language codes, and repos without a `docs/en/` (flask/requests-style) are indexed exactly as before. Chunk count dropped 20,530 → 7,206 (-65%), zero new embedding cost (pure cache hits — same content, smaller file set). Directly fixed the traced failure mode: the bare-term query `"APIRouter"` now surfaces `fastapi/routing.py:2255-2280` in hybrid's top-5 instead of 5 near-duplicate docs translations; the 8-question regression went from ~25% `MAX_ITERATIONS` failures (on the APIRouter question alone) to 0/8. Re-ran the Phase 7 eval on the new index — recall improved for dense/bm25/hybrid_history despite 5/110 eval items losing their (non-English-docs) ground-truth file from the index entirely, confirming the fix is a net win, not just noise cancelling noise.
 - `2026-08-13` — Committed the project's git history as 10 commits (spec docs + one per phase 0-9), grouped by each file's primary/creation phase using its current final content, since intermediate per-phase snapshots weren't preserved as the work progressed. This is a "squashed by phase" narrative reconstruction, not literal historical diffs — a shared/evolving file (e.g. `config.py`, `agent.py`) appears complete at whichever commit represents its main introduction, so `git log -p` on such a file won't show period-accurate incremental changes. Chose this over reconstructing intermediate versions because the value of phase commits here is a readable build narrative for a portfolio project, not forensic history, and manually recreating old file states risked subtle inconsistencies for little benefit.
 - `2026-08-13` — Fixed a real `.gitignore` bug before the first commit: the bare pattern `data/` (no leading slash) matches a directory named `data` at *any* depth, so it was silently also excluding `eval/data/eval_set.json` — which `Architecture.md` intends to be committed. Changed to `/data/` to anchor it to the repo root only. Caught by directly testing `git check-ignore` rather than assuming the pattern did what it looked like it should.
+- `2026-08-13` — User asked, for yes/no + impact only (not yet "build it"): semantic chunking, hybrid dense+keyword search, reranking, and query optimization — all four already true or straightforward given the existing architecture (hybrid retrieval already built in Phase 6; the other three were new). Gave honest per-technique impact estimates and rough build times rather than a blanket "yes, all four help equally."
+- `2026-08-13` — User authorized building query optimizer → reranker → AST chunking, in that order (the order proposed based on expected impact vs. effort). All three built, and — matching this project's established rigor — each was measured against the same 110-item eval set in isolation before being kept, not assumed to help.
+- `2026-08-13` — Reranker validation bug: initial version demanded the LLM's ranking be an exact, complete permutation of every candidate (all 20 indices, no omissions) before accepting it, and that check ran *after* the retry loop returned rather than inside it. A real case (query about `_get_flat_body_params`, 20 real candidates) showed the model returning a well-formed ranking covering 19 of 20 — still a perfectly usable top-5 — but the all-or-nothing check discarded the whole thing and silently fell back to unreranked order, with no retry attempted. Fixed by relaxing the requirement (unique, in-range, covers at least `top_k`) and moving it inside the retry loop, so only genuinely malformed output gets retried.
+- `2026-08-13` — AST chunker only special-cases Python, not every language `EXTENSION_LANGUAGE_MAP` covers. Scoped this way deliberately, matching what was actually proposed to and authorized by the user ("AST-aware chunking for Python via tree-sitter") — extending real AST parsing to JS/TS/Go/etc. would each need their own tree-sitter grammar and boundary logic, out of scope for this pass. Every other language keeps the existing character splitter unchanged.
 - `2026-08-13` — Diagnosed and fixed a severe, intermittent I/O problem that had nothing to do with the application: `python app.py` (and even a bare `pickle.load()` / `import numpy`) would sometimes take 25s–2min+, and twice failed outright with `TimeoutError: [Errno 60] Operation timed out` deep inside stdlib's `importlib._bootstrap_external.get_data` (a literal OS-level file-read timeout) or a spurious `ModuleNotFoundError` for a file that was actually present on disk. Root-caused via `ps aux` (multiple `mdworker_shared`/Spotlight processes spawned right around the times of heavy pip-install/file-creation activity) and `sample <pid>` (showed near-zero CPU progress during the "hangs," i.e. genuinely blocked on I/O, not slow computation) — Spotlight indexing and Time Machine backup were both competing for I/O on the newly-created, file-dense `.venv` and `data/` directories. Fixed with the standard mitigation: `touch .venv/.metadata_never_index` (and same for `data/`) plus `tmutil addexclusion` for both directories. Test suite went from 135s to 14.74s immediately after. Purely a local machine/environment issue, not a code bug — worth checking for again if this project is set up fresh on another machine and imports mysteriously stall.
 
 ## Deviations from the docs
 
 - `Architecture.md` specifies Python 3.11; this machine runs the project on 3.12 (see Decisions).
 - `Architecture.md`'s `agent.py` description ("LangChain ReAct — tool-calling loop without writing one") implied the classic `create_react_agent` + `AgentExecutor` API. The installed LangChain 1.3.15 replaced that entirely with `langchain.agents.create_agent`; there is no other current way to get a LangChain-native ReAct loop. Behavior is equivalent (tool-calling loop, no hand-written control flow); only the import/construction API differs.
+- `Rules.md` explicitly lists `tree-sitter` as "deferred to P2, do not add it 'while you're in there.'" Added anyway, post-Phase-9, for AST-aware Python chunking — not a silent violation: the user was asked directly (yes/no + impact analysis on four candidate RAG techniques) and explicitly authorized building it. Flagged here per `Rules.md` rule 27 ("if you notice a design flaw or deviation, say so out loud").
 
 ## Known bugs / rough edges
 
@@ -318,14 +381,16 @@ the project is complete pending the user's own review of the final commit.
 
 ## Numbers
 
-- Indexed repo: fastapi/fastapi, 1,147 source files (was 2,648 before the canonical-docs-language fix — 1,501 non-English doc translations now excluded) → **7,206 chunks** (was 20,530) in Chroma `code` collection. Per-language: 953 python, 190 markdown (was 1,691), 4 js
-- History records: 2,000 (939 PR, 1,061 plain commit) in Chroma `history` collection — unaffected by the docs fix (built from `git log`, not `file_walker`)
+- Indexed repo: fastapi/fastapi, 1,147 source files (was 2,648 before the canonical-docs-language fix — 1,501 non-English doc translations now excluded) → **10,718 chunks** (was 7,206 before AST chunking, was 20,530 before the docs fix) in Chroma `code` collection. AST chunking produces more, finer-grained chunks than the character splitter (functions/methods as individual chunks instead of arbitrary windows); 5,453 newly embedded on the re-ingest, 5,265 cache-hit (non-Python files unaffected)
+- History records: 2,000 (939 PR, 1,061 plain commit) in Chroma `history` collection — unaffected by either the docs fix or AST chunking (built from `git log`, not `file_walker`/`chunker`)
 - Eval set size: 110 items (146 mined, 36 dropped as bot/automated/duplicate-title noise), from 801 closed PRs scanned. Composition: 23 items touch real `fastapi/*.py` source, 56 touch `docs/`, 38 `.github/`, 22 `tests/`, 18 `scripts/` (items can touch multiple categories). 5/110 have a non-English-docs ground-truth file, now permanently unrecallable by design (see Decisions)
-- **recall@5 (current, post canonical-docs fix) — dense: 0.167 · bm25: 0.142 · hybrid: 0.139 · hybrid+history: 0.411** (MRR: 0.158 / 0.149 / 0.152 / 0.358). Prior numbers, superseded: dense 0.141 · bm25 0.120 · hybrid 0.142 · hybrid+history 0.306 — the fix improved every config except plain `hybrid` (flat, within noise), and widened hybrid_history's lead to 2.46x dense (was 2.2x). Plain `hybrid` now clearly trails `dense` rather than tying it — see Decisions for why
-- Indexing time: clone+walk ~8s (excl. network) · chunking ~4s · code embedding ~75s (uncached) / ~2s (cached) · PR scan ~45s · history embedding ~40s (uncached) / instant (cached) · total end-to-end (cached) ~2.5 min. Re-ingestion after the docs fix: entirely cache-hit, a few seconds
-- Eval set build time: ~6 min (801 PRs scanned, ~300 candidate file-list fetches) · full 4-config evaluation: ~4 min (110 items × 4 configs, dense/hybrid/hybrid_history embed the query — cached across configs when queries repeat), plus a one-off ~25s cold-numpy-import tax on a fresh process (see Known bugs)
-- API cost: $0.0894 (code embeddings, pre-docs-fix corpus) + $0.0103 (history embeddings) = **$0.0997 actual total**, one-time, cached for all future re-runs on this repo. The docs fix and eval re-run added $0 (pure cache hits / local computation)
-- `data/cache` 279M (grows only, by design — a hash-keyed cache doesn't prune entries when a file is later excluded from indexing, so the excluded translations' embeddings are still cached, just unused) · `data/chroma` 892M (grew despite fewer chunks — `delete_collection`+`create_collection` across this session's many rebuild cycles doesn't auto-`VACUUM` the underlying SQLite storage, so unreclaimed space from earlier larger collections is still on disk; not a correctness issue) · `data/repos` 76M · `data/bm25` 3.2M
+- **Final headline recall@5 (dense/bm25/hybrid/hybrid+history/+query-optimizer/+reranker):**
+  **0.171 / 0.120 / 0.145 / 0.456 / 0.576 / 0.595** (MRR: 0.160 / 0.133 / 0.154 / 0.393 / 0.474 / 0.472). The full stack (hybrid + history + query optimization + reranking) recovers the correct file in the top 5 on ~60% of eval queries, up from ~17% for dense retrieval alone (3.5x) — and up from 0.476 for the same full stack *before* AST chunking, the single biggest lift of the three post-P9 additions (query optimizer: 0.411→0.442; reranker: 0.442→0.476; AST chunking: 0.476→0.595).
+  Prior numbers (character-based chunking, pre-AST): dense 0.167 · bm25 0.142 · hybrid 0.139 · hybrid+history 0.411 · +optimizer 0.442 · +reranker 0.476. Before that (pre-canonical-docs-fix): dense 0.141 · bm25 0.120 · hybrid 0.142 · hybrid+history 0.306. `bm25` alone dipped slightly under AST chunking (0.142→0.120) — plausible cause: chunk-size distribution changed (many small single-function chunks vs. uniform character windows), shifting term-frequency dynamics; the fused/downstream configs still improved regardless, so not investigated further
+- Indexing time: clone+walk ~8s (excl. network) · chunking ~4s · code embedding ~75s (uncached) / ~2s (cached) · PR scan ~45s · history embedding ~40s (uncached) / instant (cached) · total end-to-end (cached) ~2.5 min. AST-chunking re-ingest: ~35s (5,453 new embeddings) + history rebuild (cache-hit, ~1 min for the PR/commit scan itself)
+- Eval set build time: ~6 min (801 PRs scanned, ~300 candidate file-list fetches) · full 6-config evaluation: ~12 min (110 items × 6 configs — the two LLM-based configs, query-optimized and reranked, each need a fresh per-query API call not covered by embedding cache)
+- API cost: $0.0894 (code embeddings, pre-docs-fix corpus) + $0.0103 (history embeddings) + ~$0.006 (AST-rechunked code re-embedding) = **~$0.106 actual total**, one-time, cached for all future re-runs on this repo (excluding the small, ongoing per-query cost of the optimizer/reranker LLM calls, also cached by query content hash for the optimizer)
+- `data/cache` 279M+ (grows only, by design — see prior note) · `data/chroma` 892M+ (see prior note on SQLite not auto-vacuuming across rebuilds) · `data/repos` 76M · `data/bm25` 3.2M
 - Answer latency: ~12.3s for a semantic_search + read_file×2 question (PRD target: under 15s) — single sample, not a p50
 - Citation counts observed across the 8 standard test questions: 0 (pure `list_files` navigation, correctly) to 15 (a multi-tool-call conceptual question); typical range 5–10
 - Git: 10 commits (project spec + one per phase 0-9), verified test suite dropped from 135s to 14.74s after the Spotlight/Time Machine exclusion fix
