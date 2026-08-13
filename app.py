@@ -9,12 +9,19 @@ from pydantic import BaseModel
 
 import config
 from src.agent.agent import ask
+from src.indexing.vector_store import get_code_collection
+from src.ingestion.cloner import get_active_repo_root
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
 app = FastAPI(title="Smriti")
 app.mount("/static", StaticFiles(directory=str(config.BASE_DIR / "frontend" / "static")), name="static")
+
+
+class InfoResponse(BaseModel):
+    repo: str
+    chunk_count: int
 
 
 class ChatRequest(BaseModel):
@@ -40,6 +47,11 @@ class ChatResponse(BaseModel):
 @app.get("/")
 def index() -> FileResponse:
     return FileResponse(config.BASE_DIR / "frontend" / "index.html")
+
+
+@app.get("/info", response_model=InfoResponse)
+def info() -> InfoResponse:
+    return InfoResponse(repo=get_active_repo_root().name, chunk_count=get_code_collection().count())
 
 
 @app.post("/chat", response_model=ChatResponse)

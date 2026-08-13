@@ -2,18 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Smriti</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Devanagari:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <h1>Smriti</h1>
-  <p>Ask a question about the indexed codebase.</p>
-  <textarea id="question" rows="3" cols="70" placeholder="Ask about this codebase..."></textarea>
-  <br>
-  <button id="ask-button">Ask</button>
-  <h2>Answer</h2>
-  <pre id="answer"></pre>
-  <h2>Sources</h2>
-  <div id="citations"></div>
+  <header class="header">
+    <div class="brand">
+      <span class="brand-deva">स्मृति</span>
+      <span class="brand-name">Smriti</span>
+    </div>
+    <div class="repo-info" id="repo-info"></div>
+  </header>
+
+  <main class="conversation" id="conversation">
+    <div class="empty-state" id="empty-state">
+      <p class="empty-state-title">What do you want to know about this codebase?</p>
+      <div class="example-chips">
+        <button class="example-chip" type="button">Where is the APIRouter class defined?</button>
+        <button class="example-chip" type="button">How does dependency injection work?</button>
+        <button class="example-chip" type="button">Why is there a separate dependencies module?</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="input-bar">
+    <textarea id="question" rows="1" placeholder="Ask about this codebase…"></textarea>
+    <button id="ask-button" type="button" aria-label="Send">↵</button>
+  </footer>
 
   <script src="/static/app.js"></script>
 </body>
