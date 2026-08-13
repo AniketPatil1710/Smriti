@@ -1,6 +1,6 @@
 {
   "config": "hybrid_history_optimized_reranked",
-  "recall_at_5": 0.47575757575757577,
-  "mrr": 0.41803030303030303,
+  "recall_at_5": 0.5954545454545455,
+  "mrr": 0.4721212121212121,
   "n": 110
 }

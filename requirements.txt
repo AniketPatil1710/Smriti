@@ -11,3 +11,5 @@ python-dotenv
 pydantic
 pytest
 tiktoken
+tree-sitter
+tree-sitter-python
