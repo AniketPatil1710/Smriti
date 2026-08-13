@@ -160,15 +160,29 @@ button {
 
 .brand {
   display: flex;
-  align-items: baseline;
-  gap: 12px;
+  align-items: center;
+  gap: 13px;
+}
+
+/* The wordmark: three offset bars, newest on top — the strata bar's own
+   sediment logic, condensed into a badge. Not a separate icon language. */
+.brand-mark {
+  flex: none;
+  filter: drop-shadow(0 2px 6px rgb(0 0 0 / 35%));
+}
+
+.brand-mark-bg {
+  fill: var(--ink-raised);
+  stroke: var(--rule);
 }
 
 .brand-deva {
   font-family: var(--font-deva);
   font-weight: 600;
-  font-size: 23px;
+  font-size: 22px;
   color: var(--vellum);
+  position: relative;
+  top: 1px;
 }
 
 .brand-name {
@@ -214,6 +228,11 @@ button {
   padding-top: min(15vh, 128px);
   text-align: center;
   animation: fade-in 400ms ease-out;
+}
+
+.empty-state-icon {
+  margin-bottom: var(--space-5);
+  filter: drop-shadow(0 4px 18px rgb(127 168 204 / 20%)) drop-shadow(0 4px 18px rgb(201 154 75 / 15%));
 }
 
 .empty-state-mark {

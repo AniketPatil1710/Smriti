@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Smriti</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231D1F27'/%3E%3Crect x='6' y='8.5' width='19' height='3.4' rx='1.7' fill='%23E8E2D5'/%3E%3Crect x='8' y='14.3' width='15' height='3.4' rx='1.7' fill='%237FA8CC'/%3E%3Crect x='7' y='20.1' width='10' height='3.4' rx='1.7' fill='%23C99A4B'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Devanagari:wght@500;600&display=swap" rel="stylesheet">
@@ -12,6 +13,12 @@
 <body>
   <header class="header">
     <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Smriti">
+        <rect class="brand-mark-bg" x="0.5" y="0.5" width="31" height="31" rx="8" />
+        <rect x="6" y="8.5" width="19" height="3.4" rx="1.7" fill="var(--vellum)" />
+        <rect x="8" y="14.3" width="15" height="3.4" rx="1.7" fill="var(--code)" />
+        <rect x="7" y="20.1" width="10" height="3.4" rx="1.7" fill="var(--history)" />
+      </svg>
       <span class="brand-deva">स्मृति</span>
       <span class="brand-name">Smriti</span>
     </div>
@@ -20,6 +27,12 @@
 
   <main class="conversation" id="conversation">
     <div class="empty-state" id="empty-state">
+      <svg class="empty-state-icon" viewBox="0 0 32 32" width="40" height="40" role="img" aria-label="Smriti">
+        <rect class="brand-mark-bg" x="0.5" y="0.5" width="31" height="31" rx="9" />
+        <rect x="6" y="8.5" width="19" height="3.4" rx="1.7" fill="var(--vellum)" />
+        <rect x="8" y="14.3" width="15" height="3.4" rx="1.7" fill="var(--code)" />
+        <rect x="7" y="20.1" width="10" height="3.4" rx="1.7" fill="var(--history)" />
+      </svg>
       <div class="empty-state-mark">स्मृति</div>
       <p class="empty-state-title">What do you want to know about this codebase?</p>
       <p class="empty-state-subtitle">Ask about the code, or the history that shaped it.</p>
