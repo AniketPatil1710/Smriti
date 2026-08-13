@@ -152,6 +152,12 @@ function renderAnswer(thinkingHandle, answer, citations) {
     message.insertBefore(strataBar, body);
   }
 
+  const mark = document.createElement("div");
+  mark.className = "answer-mark";
+  mark.setAttribute("aria-hidden", "true");
+  mark.textContent = "¶";
+  body.appendChild(mark);
+
   const answerText = document.createElement("div");
   answerText.className = "answer-text";
   answerText.textContent = answer;
