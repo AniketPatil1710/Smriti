@@ -15,6 +15,7 @@ from src.indexing.vector_store import get_code_collection, get_history_collectio
 from src.ingestion.git_history import decode_files_touched
 from src.retrieval.hybrid import reciprocal_rank_fusion
 from src.retrieval.query_optimizer import optimize_query
+from src.retrieval.reranker import rerank_ids
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -36,6 +37,7 @@ def retrieve(
     top_k: int = config.TOP_K,
     mode: str = config.RETRIEVAL_MODE,
     optimize: bool = False,
+    rerank: bool = False,
 ) -> list[RetrievedChunk]:
     """Return the `top_k` code chunks most relevant to `query`, ranked by `mode`.
 
@@ -43,22 +45,36 @@ def retrieve(
     before searching (see query_optimizer.py) — evidence this matters: a bare
     term like "APIRouter" retrieves poorly across every mode, while the full
     question "where is the APIRouter class defined?" does not.
+
+    `rerank=True` fetches a wider candidate pool and has an LLM re-score it
+    by reading the query and each candidate's actual text together, then
+    cuts to `top_k` (see reranker.py) — a comparison dense cosine similarity
+    and BM25 term overlap can't make, since neither ever looks at the query
+    and a document side by side.
     """
     if optimize:
         query = optimize_query(query)
 
+    fetch_k = config.RERANK_CANDIDATE_POOL if rerank else top_k
+
     if mode == "dense":
-        chunk_ids = _dense_rank(query, top_k)
+        chunk_ids = _dense_rank(query, fetch_k)
     elif mode == "bm25":
-        chunk_ids = search_bm25(query, top_k)
+        chunk_ids = search_bm25(query, fetch_k)
     elif mode == "hybrid":
         pool = config.RRF_CANDIDATE_POOL
         fused = reciprocal_rank_fusion([_dense_rank(query, pool), search_bm25(query, pool)])
-        chunk_ids = fused[:top_k]
+        chunk_ids = fused[:fetch_k]
     else:
         raise ValueError(f"unknown retrieval mode: {mode!r} (expected 'dense', 'bm25', or 'hybrid')")
 
-    return _fetch_chunks_by_id(chunk_ids)
+    chunks = _fetch_chunks_by_id(chunk_ids)
+    if not rerank or not chunks:
+        return chunks[:top_k]
+
+    by_id = {c.chunk_id: c for c in chunks}
+    reranked_ids = rerank_ids(query, [c.chunk_id for c in chunks], [c.text for c in chunks], top_k)
+    return [by_id[i] for i in reranked_ids if i in by_id]
 
 
 def _dense_rank(query: str, top_k: int) -> list[str]:
