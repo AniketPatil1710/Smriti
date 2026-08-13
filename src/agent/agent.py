@@ -67,7 +67,7 @@ def ask(question: str) -> AskResult:
         logger.warning(f"agent hit max_iterations={config.MAX_ITERATIONS} for question: {question!r}")
         messages = agent.get_state(run_config).values["messages"]
         answer = _last_answer(messages)
-        note = f"Stopped after {config.MAX_ITERATIONS} steps."
+        note = f"Stopped after {config.MAX_ITERATIONS} steps. Here's what I found so far."
         return AskResult(
             answer=f"{answer}\n\n({note})" if answer else note,
             citations=_collect_citations(messages),

@@ -20,6 +20,7 @@
 
   <main class="conversation" id="conversation">
     <div class="empty-state" id="empty-state">
+      <div class="empty-state-mark">स्मृति</div>
       <p class="empty-state-title">What do you want to know about this codebase?</p>
       <div class="example-chips">
         <button class="example-chip" type="button">Where is the APIRouter class defined?</button>
@@ -30,8 +31,11 @@
   </main>
 
   <footer class="input-bar">
-    <textarea id="question" rows="1" placeholder="Ask about this codebase…"></textarea>
-    <button id="ask-button" type="button" aria-label="Send">↵</button>
+    <div class="input-bar-inner">
+      <textarea id="question" rows="1" placeholder="Ask about this codebase…"></textarea>
+      <button id="ask-button" type="button" aria-label="Send">↵</button>
+    </div>
+    <div class="input-hint">Enter to ask · Shift+Enter for a new line</div>
   </footer>
 
   <script src="/static/app.js"></script>

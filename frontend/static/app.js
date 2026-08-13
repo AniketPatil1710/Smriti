@@ -4,6 +4,13 @@ const repoInfoEl = document.getElementById("repo-info");
 const questionEl = document.getElementById("question");
 const askButton = document.getElementById("ask-button");
 
+// Cosmetic only — the backend answers in one request, not a stream of tool
+// events — but cycling through what the ReAct loop is plausibly doing reads
+// far better than a static "loading" label while genuinely waiting ~10-15s,
+// and hints at the tool-calling loop underneath. See Design.md's "Thinking
+// state" spec.
+const THINKING_PHRASES = ["searching code…", "checking history…", "reading source…", "weighing citations…"];
+
 async function loadRepoInfo() {
   try {
     const response = await fetch("/info");
@@ -33,11 +40,23 @@ function addThinkingMessage() {
   body.className = "answer-body";
   const thinking = document.createElement("div");
   thinking.className = "thinking";
-  thinking.textContent = "thinking…";
   body.appendChild(thinking);
   message.appendChild(body);
   conversationEl.appendChild(message);
-  return message;
+
+  let i = 0;
+  const renderLine = () => {
+    thinking.textContent = "";
+    const line = document.createElement("span");
+    line.className = "thinking-line";
+    line.textContent = THINKING_PHRASES[i % THINKING_PHRASES.length];
+    thinking.appendChild(line);
+    i += 1;
+  };
+  renderLine();
+  const intervalId = window.setInterval(renderLine, 2200);
+
+  return { message, stopThinking: () => window.clearInterval(intervalId) };
 }
 
 function buildStrataBar(citations) {
@@ -47,18 +66,45 @@ function buildStrataBar(citations) {
 
   const bar = document.createElement("div");
   bar.className = "strata-bar";
+
+  const segments = [];
   if (codeCount > 0) {
     const seg = document.createElement("div");
-    seg.className = "strata-segment-code";
+    seg.className = "strata-segment strata-segment-code";
+    seg.dataset.source = "code";
     seg.style.flex = String(codeCount);
     bar.appendChild(seg);
+    segments.push(seg);
   }
   if (historyCount > 0) {
     const seg = document.createElement("div");
-    seg.className = "strata-segment-history";
+    seg.className = "strata-segment strata-segment-history";
+    seg.dataset.source = "history";
     seg.style.flex = String(historyCount);
     bar.appendChild(seg);
+    segments.push(seg);
   }
+
+  // Only worth wiring hover-linking when there's an actual mix to distinguish
+  if (segments.length > 1) {
+    for (const seg of segments) {
+      seg.addEventListener("mouseenter", () => {
+        bar.classList.add("dimmed");
+        seg.classList.add("emphasized");
+        for (const chip of bar._chips || []) {
+          chip.classList.toggle("emphasized", chip.dataset.source === seg.dataset.source);
+        }
+      });
+      seg.addEventListener("mouseleave", () => {
+        bar.classList.remove("dimmed");
+        seg.classList.remove("emphasized");
+        for (const chip of bar._chips || []) {
+          chip.classList.remove("emphasized");
+        }
+      });
+    }
+  }
+
   return bar;
 }
 
@@ -73,10 +119,11 @@ function buildCitationChip(citation) {
 
   const expanded = document.createElement("div");
   expanded.className = "citation-expanded";
+  expanded.dataset.source = citation.source;
 
   const eyebrow = document.createElement("div");
   eyebrow.className = "citation-eyebrow";
-  eyebrow.textContent = citation.label;
+  eyebrow.textContent = citation.source === "history" ? "history" : "code";
 
   const body = document.createElement("pre");
   body.className = "citation-body";
@@ -91,16 +138,18 @@ function buildCitationChip(citation) {
 
   wrapper.appendChild(chip);
   wrapper.appendChild(expanded);
-  return wrapper;
+  return { wrapper, chip };
 }
 
-function renderAnswer(thinkingMessage, answer, citations) {
-  const body = thinkingMessage.querySelector(".answer-body");
+function renderAnswer(thinkingHandle, answer, citations) {
+  thinkingHandle.stopThinking();
+  const { message } = thinkingHandle;
+  const body = message.querySelector(".answer-body");
   body.textContent = "";
 
   const strataBar = buildStrataBar(citations);
   if (strataBar) {
-    thinkingMessage.insertBefore(strataBar, body);
+    message.insertBefore(strataBar, body);
   }
 
   const answerText = document.createElement("div");
@@ -111,15 +160,20 @@ function renderAnswer(thinkingMessage, answer, citations) {
   if (citations.length > 0) {
     const citationsEl = document.createElement("div");
     citationsEl.className = "citations";
+    const chips = [];
     for (const citation of citations) {
-      citationsEl.appendChild(buildCitationChip(citation));
+      const { wrapper, chip } = buildCitationChip(citation);
+      citationsEl.appendChild(wrapper);
+      chips.push(chip);
     }
     body.appendChild(citationsEl);
+    if (strataBar) strataBar._chips = chips;
   }
 }
 
-function renderError(thinkingMessage, message) {
-  const body = thinkingMessage.querySelector(".answer-body");
+function renderError(thinkingHandle, message) {
+  thinkingHandle.stopThinking();
+  const body = thinkingHandle.message.querySelector(".answer-body");
   body.textContent = "";
   const errorText = document.createElement("div");
   errorText.className = "answer-text error-text";
@@ -134,7 +188,7 @@ async function ask(question) {
   askButton.disabled = true;
 
   addUserMessage(question);
-  const thinkingMessage = addThinkingMessage();
+  const thinkingHandle = addThinkingMessage();
   conversationEl.scrollTop = conversationEl.scrollHeight;
 
   try {
@@ -144,13 +198,13 @@ async function ask(question) {
       body: JSON.stringify({ question }),
     });
     if (!response.ok) {
-      renderError(thinkingMessage, `Couldn't reach the model. (${response.status})`);
+      renderError(thinkingHandle, `Couldn't reach the model. (${response.status})`);
       return;
     }
     const data = await response.json();
-    renderAnswer(thinkingMessage, data.answer, data.citations);
+    renderAnswer(thinkingHandle, data.answer, data.citations);
   } catch (err) {
-    renderError(thinkingMessage, `Couldn't reach the model. ${err.message}`);
+    renderError(thinkingHandle, `Couldn't reach the model. ${err.message}`);
   } finally {
     askButton.disabled = false;
     conversationEl.scrollTop = conversationEl.scrollHeight;
