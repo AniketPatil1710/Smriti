@@ -10,12 +10,13 @@ import json
 import config
 from eval.metrics import mrr, recall_at_k
 from src.retrieval.hybrid import reciprocal_rank_fusion
+from src.retrieval.query_optimizer import optimize_query
 from src.retrieval.retriever import retrieve, search_history
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-CONFIGS = ["dense", "bm25", "hybrid", "hybrid_history"]
+CONFIGS = ["dense", "bm25", "hybrid", "hybrid_history", "hybrid_history_optimized"]
 
 
 def load_eval_set() -> list[dict]:
@@ -31,9 +32,12 @@ def retrieved_files_for(query: str, config_name: str, exclude_pr: int | None = N
         chunks = retrieve(query, top_k=config.TOP_K, mode=config_name)
         return [c.file_path for c in chunks]
 
-    if config_name == "hybrid_history":
-        code_files = retrieved_files_for(query, "hybrid")
-        history_records = search_history(query, top_k=config.TOP_K)
+    if config_name in ("hybrid_history", "hybrid_history_optimized"):
+        optimize = config_name == "hybrid_history_optimized"
+        code_chunks = retrieve(query, top_k=config.TOP_K, mode="hybrid", optimize=optimize)
+        code_files = [c.file_path for c in code_chunks]
+        search_query = optimize_query(query) if optimize else query
+        history_records = search_history(search_query, top_k=config.TOP_K)
         if exclude_pr is not None:
             # leakage guard: an eval query IS that PR's own body — without this,
             # semantic history search would trivially find itself

@@ -14,6 +14,7 @@ from src.indexing.embedder import embed_texts
 from src.indexing.vector_store import get_code_collection, get_history_collection
 from src.ingestion.git_history import decode_files_touched
 from src.retrieval.hybrid import reciprocal_rank_fusion
+from src.retrieval.query_optimizer import optimize_query
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -34,8 +35,18 @@ def retrieve(
     query: str,
     top_k: int = config.TOP_K,
     mode: str = config.RETRIEVAL_MODE,
+    optimize: bool = False,
 ) -> list[RetrievedChunk]:
-    """Return the `top_k` code chunks most relevant to `query`, ranked by `mode`."""
+    """Return the `top_k` code chunks most relevant to `query`, ranked by `mode`.
+
+    `optimize=True` rewrites `query` into a fuller, retrieval-friendlier form
+    before searching (see query_optimizer.py) — evidence this matters: a bare
+    term like "APIRouter" retrieves poorly across every mode, while the full
+    question "where is the APIRouter class defined?" does not.
+    """
+    if optimize:
+        query = optimize_query(query)
+
     if mode == "dense":
         chunk_ids = _dense_rank(query, top_k)
     elif mode == "bm25":

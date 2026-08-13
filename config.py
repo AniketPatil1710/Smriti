@@ -77,6 +77,13 @@ RRF_K = 60
 RRF_CANDIDATE_POOL = 20  # results fetched from each ranking before fusion, then cut to top_k
 RETRIEVAL_MODE = "hybrid"  # "dense" | "bm25" | "hybrid" — evaluate.py overrides per config
 
+# --- Query optimization ---
+QUERY_OPTIMIZER_MAX_RETRIES = 3
+
+# --- Reranking ---
+RERANK_CANDIDATE_POOL = 20  # candidates fetched (post-fusion) before reranking, then cut to top_k
+RERANK_MAX_RETRIES = 3
+
 # --- History indexing ---
 MAX_COMMITS = 2000
 HISTORY_PR_SCAN_LIMIT = 2000  # merged PRs scanned when building the sha -> PR join map
